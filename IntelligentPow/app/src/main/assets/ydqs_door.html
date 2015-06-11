@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,user-scalable=no,minimum-scale=1.0,maximum-scale=1.0"/>
+    <title></title>
+</head>
+<body>
+    <div class="content_kt_list">
+        <div class="loading" style="width: 100%;text-align: center;margin-top: 10%;">
+            <p style="padding-left: 30px;"><img src="oo.jpg"/></p>
+            <p>数据加载中</p>
+        </div>
+    </div>
+</body>
+<script src="jquery-2.1.1.js"></script>
+<script src="highstock.js"></script>
+<script type="application/javascript" src="chartstyle.js"></script>
+<!--<script type="application/javascript" src="harmazing.plugin.WindowPlugin.js"></script>-->
+<script>
+ var paras = document.body.baseURI.split("?");
+$(function () {
+    $(".content_kt_list").css("width",(document.documentElement.clientWidth-16)+"px").css("height",(document.documentElement.clientHeight-16)+"px");
+    Highcharts.setOptions({ global: { useUTC: false } });
+   
+    if(paras&&paras[1]){
+	   setTimeout("getData()",1000);
+    }		
+
+    
+
+});
+
+function draw(data) {
+        $(".content_kt_list").highcharts('StockChart', {
+            title: {
+
+                align: "left"
+            },
+            tooltip: {
+		    	pointFormat: '<span></span><b></b><br/>'
+            },
+            rangeSelector: {
+                inputEnabled: false
+            },
+            navigator: {
+                height:25,
+                series: {
+                    type: 'line',
+                    step: true
+
+                }
+            },
+            yAxis: {
+//                        tickPixelInterval: null,
+                opposite: false,
+                gridLineWidth: 0,
+                labels: {
+                    formatter: function (d) {
+                        console.log(d, this);
+                        if (this.value == 1) {
+                            return "开";
+                        } else if (this.value == 0) {
+                            return "关";
+                        } else {
+                            return "";
+                        }
+                    }
+                }
+            },
+            series: [
+                {
+                    data: data,
+                    step: true
+                }
+            ]
+        });
+}
+
+/**
+ *	点击获取用电统计数据
+ */
+//function getlastTimeDataForOnclick(deviceId,rbtn){
+function rBtnClick(id){
+	var lastdata ;
+
+	$.ajax({
+            url:"http://"+paras[2]+"/spms/app/getSensorOnOffState?"+paras[1],
+            success: function (result) {
+                if(typeof result === "string"){
+                    var r = JSON.parse(result);
+                }else{
+                    var r = result;
+                }
+                //$(".loading").hide();
+                draw(r);
+            }
+	});
+
+}
+function getData(){
+	 $.ajax({
+            url:"http://"+paras[2]+"/spms/app/getSensorOnOffState?"+paras[1],
+            success: function (result) {
+                if(typeof result == "string"){
+                    var r = JSON.parse(result);
+                }else{
+                    var r = result;
+                }
+                //$(".loading").hide();
+                draw(r);
+				setTimeout("getData()",5000);
+            }
+        });
+}
+</script>
+</html>

@@ -1,0 +1,1350 @@
+/*--------全局变量--------*/
+var Curvenum = 0;//曲线数量
+var num = 0;//曲线数量
+var appting = "";//用来设定曲线是修改该是添加新的
+var deviceId = "";
+var userId = "";
+var address = "";
+var url = window.location.href;
+var params = url.split("?")[1].split("&");
+for(var i = 0; i<params.length;i++){
+	var paramName = params[i].split("=")[0];
+	if(paramName == "deviceId"){
+		deviceId = params[i].split("=")[1];
+	}
+	if(paramName == "userId"){
+		userId = params[i].split("=")[1];
+	}
+	if(paramName == "url"){
+		address = params[i].split("=")[1];
+	}
+	if(paramName == "num"){
+		num = params[i].split("=")[1];
+	}
+}//设备ID
+var CurveObj = {};
+
+$(function(){
+	$("#container").css("width",(document.documentElement.clientWidth-50)+"px").css("height",(document.documentElement.clientHeight*0.85)+"px")
+});
+
+openLineChart();
+/*
+ 	加载空调单独曲线设置
+ */
+ function getCurveSetting(id){
+ 	$(".appting").show();
+	$(".content").hide();
+	$(".Raircon").hide();
+	$(".contentInfo").hide();
+	$(".content").hide();
+	$(".contentInfoToSetting").hide();
+	ajaxj("/app/QueryCurveSetting", {Curveid:id}, function (data) {
+		var obj = data.data;
+		$(".appting_table tr").remove();
+		var tr = "<tr>"+
+                		"<td><font style=\"color:black;\">时间</font></td>"+
+                		"<td><font style=\"color:black;\">开关</font></td>"+
+                		"<td><font style=\"color:black;\">温度</font></td>"+
+                		"<td><font style=\"color:black;\">模式</font></td>"+
+                		"<td><font style=\"color:black;\">风速</font></td>"+
+                	"</tr>";
+		for(var i=0 ; i<obj.length;i++){
+			var obj = data.data;
+			
+			for(var i=0 ; i<obj.length;i++){
+			tr = tr + "<TR>";
+					tr = tr + "<TD>";
+					tr = tr + "<select>"+
+								  "<option value =\"7:00\">7:00</option>"+
+								  "<option value =\"8:00\">8:00</option>"+
+								  "<option value=\"6:00\">6:00</option>"+
+								  "<option value=\"8:00\">9:00</option>"+
+								"</select>";
+					tr = tr + "</TD>";
+					tr = tr + "<TD>";
+					tr = tr + "<select>"+
+								  "<option value =\"7:00\">off</option>"+
+								  "<option value =\"8:00\">on</option>"+
+								"</select>";
+					tr = tr + "</TD>";
+					tr = tr + "<TD>";
+					tr = tr + "<input   type=\"text\" value=\"20°C\"/>";
+					tr = tr + "</TD>";
+					tr = tr + "<TD>";//制冷:1，制热:2，送风:3，除湿:4，自动:0
+					tr = tr + "<select>"+
+								  "<option value =\"1\">制冷</option>"+
+								  "<option value =\"2\">制热</option>"+
+								  "<option value =\"3\">送风</option>"+
+								  "<option value =\"4\">除湿</option>"+
+								  "<option value =\"0\">自动</option>"+
+								"</select>";
+					tr = tr + "</TD>";
+					tr = tr + "<TD>";
+					tr = tr + "<select>"+
+								  "<option value =\"1\">风速壹</option>"+
+								  "<option value =\"2\">风速贰</option>"+
+								  "<option value =\"3\">风速叁</option>"+
+								  "<option value =\"4\">风速肆</option>"+
+								  "<option value =\"5\">风速伍</option>"+
+								"</select>";
+					tr = tr + "</TD>";
+			tr = tr + "</TR>";
+				}
+				
+		}
+			$(".appting_table").append(tr);
+			
+	})
+ }
+
+function showcharts(){
+	$(".content").hide();
+	$(".Raircon").hide();
+	$(".contentInfo").hide();
+	$(".content").hide();
+	$(".contentInfoToSetting").hide();
+	$('#charts').show();
+}
+ function showInfo2(that) {
+     $("a").removeClass("hover");
+     $(that).addClass("hover");
+     $(".contentInfoToSetting").show();
+     $(".contentInfo").hide();
+     $(".content").hide();
+     $(".Raircon").hide();
+     $('#charts').hide();
+     clearTimeout(continueRefresh);
+ }
+ 
+ function starShow(showOrhide){
+	 if(showOrhide == "show"){
+		 $(".content").hide();
+		 $(".Raircon").show();
+		 $(".contentInfo").hide();
+		 $(".content").hide();
+		 $('#charts').hide();
+	     $(".contentInfoToSetting").hide();
+	 }
+	 if(showOrhide == "hide"){
+		 $(".Raircon").hide();
+		 $(".contentInfo").hide();
+	     $(".content").show();
+	     $('#charts').hide();
+	     $(".contentInfoToSetting").hide();
+	 }
+ }
+ function starShowSetting(showOrhide){
+	 if(showOrhide == "show"){
+		 $(".content").hide();
+		 $(".Raircon").hide();
+		 $(".contentInfo").hide();
+		 $(".content").hide();
+		 $('#container').hide();
+	     $(".contentInfoToSetting").hide();
+	     $('#charts').show();
+	 }
+	 if(showOrhide == "hide"){
+		 $(".Raircon").hide();
+		 $(".contentInfo").hide();
+	     $(".content").show();
+	     $(".contentInfoToSetting").hide();
+	     $('#charts').hide();
+	     Curvenum = 0;
+	 }
+ }
+ 
+var clocking = new Array();
+var temp = new Array();
+var obj ;
+/*-----------加载单条曲线数据-------------*/
+function lo(Curveids){
+	ajaxj("/app/QueryCurveSetting", {Curveid:Curveids,userId:userId}, function (data) {
+		obj = data.data;
+		clocking = new Array();
+		temp = new Array();
+		for(var j = 0 ; j < obj.length ; j++){
+			clocking[j] = obj[j].clocking;
+			temp[j] = parseInt( (obj[j].temp == null || obj[j].temp == "") ? 0 : obj[j].temp);
+		}
+		//alert(temp[0]+"-"+temp[1]+"-"+temp[2]+"-"+temp[3]);
+		showCh();
+		showcharts();
+
+
+	});
+}
+
+function showCh(){
+	$('#container').highcharts({
+	 	chart: {
+	 	
+            	backgroundColor: {
+                	linearGradient: [0, 0, 500, 500],
+                stops: [
+                    [0, '#FFFFFF']
+                ]
+            },
+            
+            legend: {
+	            layout: 'vertical',
+	            backgroundColor: 'none',
+	            floating: true,
+	            align: 'left',
+	            x: 100,
+	            verticalAlign: 'top',
+	            y: 70
+        	}
+            
+        },
+        title: {
+        	style:{
+        			color: '#000000',
+        			fontWeigth:900,
+					fontSize: '50px'
+        	},
+        	text: '',
+        },
+        xAxis: {
+        	categories: clocking,
+        	labels:{
+            	style: {
+					color: '#000000',//刻度颜色
+					fontSize: '40px'
+				}
+            }
+            
+        },
+		plotOptions: { 
+			series: { 
+				cursor: 'pointer',
+				marker: {  
+					radius: 30
+				},
+				dataLabels:{ 
+					enabled: true,
+					y:-10,
+					style:{
+						fontSize:'40px'
+					} 
+				}
+			},
+			line:{
+				lineWidth: 5,
+				point:{
+					events: { 
+						click: function() { 
+							
+							window.location.href = "http://127.0.0.1/param?r="+
+	"{\"num\":\""+num+"\",\"type\":\"node\",\"id\":\""+obj[this.x].id+"\",\"on_off\":"+obj[this.x].on_off+",\"windspeed\":"+obj[this.x].windspeed+",\"mode\":"+obj[this.x].mode+",\"temp\":"+obj[this.x].temp+"} ";
+							
+						} 
+					}
+				}
+			}
+		},
+        yAxis: {
+        	title: {
+        		text: '温度(℃)',
+        		color:'#000000',
+				style:{
+					fontSize: '40px'
+				}
+        	},
+        	labels:{
+            	style: {
+					color: '#000000',//刻度颜色,
+					fontSize: '40px'
+				}
+            },
+			lineColor: '#c0c0c0',
+            lineWidth: 1
+        },
+      series: [{
+            data: temp,
+            step: false,//left,right,center,true,默认false
+            name: '<font style=\"font-size:40px\">时间</font>'
+        }]
+    });
+    $('#charts').hide();
+}
+/*--------曲线图翻页--------*/
+function nextPage(lor){
+	
+	if(lor == "l"){
+		if(num == 0){//调整曲线数量 - 
+			num = Curvenum;
+		}else{
+			num = num-1;	
+		}
+		lo(CurveObj[num].id);
+	}else{
+		if(num >= Curvenum){//调整曲线数量 + 
+			num = 0;
+		}else{
+			num = num+1;	
+		}
+		lo(CurveObj[num].id);
+	}
+	flush();
+	window.location.href = "http://127.0.0.1/param?r={\"type\":\"page\",\"num\":\""+num+"\"}";
+}
+
+/*------------修改单个曲线------------*/
+function edit(){
+	appting = CurveObj[num].id;
+	$('#charts').hide();
+	$("#chartstableDiv").show();
+	ajaxj("/app/QueryCurveSetting", {Curveid:CurveObj[num].id,userId:userId}, function (data) {
+		$(".chartstable tr").remove();   
+		var obj = data.data;
+		var tr = "<tr>"+
+        		"<td><font style=\"color:white;\">时间</font></td>"+
+        		"<td><font style=\"color:white;\">开关</font></td>"+
+        		"<td><font style=\"color:white;\">温度</font></td>"+
+        		"<td><font style=\"color:white;\">模式</font></td>"+
+        		"<td><font style=\"color:white;\">风速</font></td>"+
+        		"<td><font style=\"color:white;\">操作</font></td>"+
+        	"</tr>";
+		for(var j = 0 ; j < obj.length ; j++){
+			tr = tr + "<tr>";	
+			//时钟
+			tr = tr + "<td>";
+			tr = tr + "<input size=\"7\" name=\"clocking\"  type=\"text\" value=\""+obj[j].clocking+"\"/>";
+			tr = tr + "</td>";
+			//开关
+			tr = tr + "<td>";
+			tr = tr + "<select name=\"on_off\">"+
+							((obj[j].on_off == 1) ? 
+							"<option value =\"1\">开</option><option value =\"0\">关</option>" :
+							 
+							"<option value =\"0\">关</option><option value =\"1\">开</option>")+
+					"</select>";
+			tr = tr + "</td>";
+			//温度
+			tr = tr + "<td>";
+			tr = tr + "<input size=\"7\" name=\"temp\" type=\"text\" value=\""+((obj[j].temp == null || obj[j].temp == "") ? 0 : obj[j].temp)+"\"/>";
+			tr = tr + "</td>";
+			//模式
+			var m = new Array("自动","制冷","制热","送风","除湿");
+			tr = tr + "<td>";//制冷:1，制热:2，送风:3，除湿:4，自动:0
+			tr = tr + "<select name=\"mode\">"+
+						  "<option value =\"1\">"+m[parseInt(obj[j].mode)]+"</option>"+
+						  "<option value =\"2\">制热</option>"+
+						  "<option value =\"3\">送风</option>"+
+						  "<option value =\"4\">除湿</option>"+
+						  "<option value =\"0\">自动</option>"+
+						  "<option value =\"1\">制冷</option>"+
+						"</select>";
+			tr = tr + "</td>";
+			//风速
+			var w = new Array("风速一","风速二","风速三","风速四","风速五");
+			tr = tr + "<td>";
+			tr = tr + "<select name=\"windspeed\">"+
+						  "<option value =\""+obj[j].windspeed+"\">"+w[parseInt(obj[j].windspeed)]+"</option>"+
+						  "<option value =\"2\">风速二</option>"+
+						  "<option value =\"3\">风速三</option>"+
+						  "<option value =\"4\">风速四</option>"+
+						  "<option value =\"5\">风速五</option>"+
+						  "<option value =\"1\">风速一</option>"+
+						"</select>";
+			tr = tr + "</td>";
+			//定时计划开启或关闭
+			var se = new Array('关闭定时','开启定时');
+			tr = tr + "<td>";
+			//alert(obj[j].startend);
+			tr = tr + "<select style=\"display:none\" name=\"startend\">"+
+						  "<option value =\""+obj[j].startend+"\">"+se[obj[j].startend]+"</option>"+
+						  "<option value =\"0\">关闭定时</option>"+
+						  "<option value =\"1\">开启定时</option>"+
+						"</select>";
+			tr = tr + "</td>";
+			//操作
+			tr = tr + "<td>";
+			//tr = tr + "<input  onclick=\"delClocking('"+obj[j].id+"')\" type=\"submit\" value=\"删除\"/>";
+			tr = tr + "<input  onclick=\"delRow(this)\" type=\"submit\" value=\"删除\"/>";
+			tr = tr + "</td>";
+			tr = tr + "</tr>";
+			appting = CurveObj[num].id;
+		}
+		$(".chartstable").append(tr); 
+	},{showWaiting:true});
+	  	
+}
+
+/*------------添加新曲线------------*/
+function addNewCurve(){
+	appting = CurveObj[num].id;
+	$('#charts').hide();
+	$("#chartstableDiv").show();
+	var tr = "";
+	$(".chartstable tr").remove(); 
+		tr = tr + "<tr>"+
+        		"<td><font style=\"color:#000000;\">时间</font></td>"+
+        		"<td><font style=\"color:#000000;\">开关</font></td>"+
+        		"<td><font style=\"color:#000000;\">温度</font></td>"+
+        		"<td><font style=\"color:#000000;\">模式</font></td>"+
+        		"<td><font style=\"color:#000000;\">风速</font></td>"+
+        		"<td><font style=\"color:#000000;\">定时操作</font></td>"+
+        		"<td><font style=\"color:#000000;\">操作</font></td>"+
+        	"</tr>";
+		tr = tr + "<TR>";
+		tr = tr + "<TD>";
+		tr = tr + "<input name=\"clocking\" size=\"7\" class=\"clocking\" type=\"text\" value=\"\"/>";
+		tr = tr + "</TD>";
+		tr = tr + "<TD>";
+		tr = tr + "<select name=\"on_off\" class=\"on_off\">"+
+					  "<option value =\"0\">关</option>"+
+					  "<option value =\"1\">开</option>"+
+					"</select>";
+		tr = tr + "</TD>";
+		tr = tr + "<TD>";
+		tr = tr + "<input name=\"temp\" size=\"7\" type=\"text\" class='temp'  value=\"\"/>";
+		tr = tr + "</TD>";
+		tr = tr + "<TD>";//制冷:1，制热:2，送风:3，除湿:4，自动:0
+		tr = tr + "<select id=\"mode\" name=\"mode\">"+
+					  "<option value =\"1\">制冷</option>"+
+					  "<option value =\"2\">制热</option>"+
+					  "<option value =\"3\">送风</option>"+
+					  "<option value =\"4\">除湿</option>"+
+					  "<option value =\"0\">自动</option>"+
+					"</select>";
+		tr = tr + "</TD>";
+		tr = tr + "<TD>";
+		tr = tr + "<select name=\"windspeed\" class='windspeed'>"+
+					  "<option value =\"1\">风速一</option>"+
+					  "<option value =\"2\">风速二</option>"+
+					  "<option value =\"3\">风速三</option>"+
+					  "<option value =\"4\">风速四</option>"+
+					  "<option value =\"5\">风速五</option>"+
+					"</select>";
+		tr = tr + "</TD>";
+		//定时计划开启或关闭
+			tr = tr + "<td>";
+			tr = tr + "<select name=\"startend\">"+
+						"<option value =\"1\">开启定时</option>"+
+						"<option value =\"0\">关闭定时</option>"+
+						"</select>";
+			tr = tr + "</td>";
+		//操作
+		tr = tr + "<td>";
+		tr = tr + "<input  onclick=\"delRow(this)\" type=\"submit\" value=\"删除\"/>";
+		tr = tr + "</td>";
+		
+		tr = tr + "</TR>";
+		appting = "";
+	$(".chartstable").append(tr); 
+}
+
+/*------删除当前行-------*/
+function delRow(obj){
+	$(obj).parent().parent().remove(); 
+	
+	/*var len=$("chartstable tr").length;
+	if(len>1){
+		$("tr[id='"+(len-1)+"']").remove();  
+	}*/
+}
+
+/*------------保存新曲线------------*/
+function saveNewCurve(){
+	if( confirm("是否保存?") ){
+		alert(appting);
+		var Clocksetting = new Array();//空调时钟设置对象数组
+		$('.chartstable tr:not(:first)').each(function(){
+			var tds = $(this).children();
+			var clocksetting = {}
+			for(var i = 0 ; i < tds.length ; i++){
+				//alert("className = "+ tds[i].childNodes[0].name );
+				if(tds[i].childNodes[0].name == 'temp'){
+					alert(tds[i].childNodes[0].value);
+					clocksetting.temp = tds[i].childNodes[0].value;
+				}
+				if(tds[i].childNodes[0].name == 'clocking'){
+					clocksetting.clocking = tds[i].childNodes[0].value;
+				}
+				if(tds[i].childNodes[0].name == 'on_off'){
+					//alert(tds[i].childNodes[0].value);
+					clocksetting.on_off = tds[i].childNodes[0].value;
+				}
+				if(tds[i].childNodes[0].name == 'windspeed'){
+					clocksetting.windspeed = tds[i].childNodes[0].value;
+				}
+				if(tds[i].childNodes[0].name == 'mode'){
+					clocksetting.mode = tds[i].childNodes[0].value;
+				}
+				if(tds[i].childNodes[0].name == 'startend'){
+					clocksetting.startend = tds[i].childNodes[0].value;
+				}
+			}
+				Clocksetting.push(clocksetting);
+		})
+		var d = "";  
+		ajaxj("/app/addCurvesClocks", {Clocksetting:Clocksetting,spmsDevice:deviceId,appting:appting,userId:userId}, function (data) {
+			$("#chartstableDiv").hide();
+			$('#charts').show();
+			d = data.data;
+			if(d == "500"){
+				alert("保存失败");
+			}else{
+				alert("保存成功");
+			}
+			ajaxj("/app/QueryCurve", {deviceId:deviceId,userId:userId}, function (data) {
+						CurveObj = data.data;
+						//alert(CurveObj[num].id);
+						lo(CurveObj[num].id);
+			})/*--加载曲线数量--*/
+			appting = "";
+		},{showWaiting:true});
+	}
+}
+
+/*------------设置重复------------
+function repeat(){
+	var weekName = ['星期一','星期二','星期三','星期四','星期五','星期六','星期日'];
+	$('#charts').hide();
+	$("#weekTable").show();
+	var tr = "";
+	$(".weekTable tr").remove(); 
+	//先把复选框喷出来
+	tr = tr + "<tr><td>"+
+			"  weekName[0]<input id=\"monday\" type=\"checkbox\" value=\"\" />   "+
+			"  weekName[1]<input id=\"tuesday\" type=\"checkbox\" value=\"\" />   "+
+			"  weekName[2]<input id=\"wednesday\" type=\"checkbox\" value=\"\" />   "+
+			"  weekName[3]<input id=\"thursday\" type=\"checkbox\" value=\"\" />   "+
+			"  weekName[4]<input id=\"friday\" type=\"checkbox\" value=\"\" />   "+
+			"  weekName[5]<input id=\"saturday\" type=\"checkbox\" value=\"\" />   "+
+			"  weekName[6]<input id=\"sunday\" type=\"checkbox\" value=\"\" />   "+
+	tr = tr + "<input  onclick=\"saveWeeks(this)\" type=\"submit\" value=\"保存\"/>";
+	tr = tr + "</td></tr>";
+	$(".weekTable").append(tr); 
+	//把值附上
+	ajaxj("/app/QueryCurveSetting", {Curveid:CurveObj[num].id}, function (data) {
+		var obj = data.data;
+		for(var i = 0 ; i < 1 ; i++){
+			if(obj[j].monday == "1")	{		$('#monday').attr("checked", true); 		}
+			if(obj[j].tuesday == "1")	{		$('#tuesday').attr("checked", true); 		}
+			if(obj[j].wednesday == "1")	{		$('#wednesday').attr("checked", true); 		}
+			if(obj[j].thursday == "1")	{		$('#thursday').attr("checked", true); 		}
+			if(obj[j].friday == "1")	{		$('#friday').attr("checked", true); 		}
+			if(obj[j].saturday == "1")	{		$('#saturday').attr("checked", true); 		}
+			if(obj[j].sunday == "1")	{		$('#sunday').attr("checked", true); 		}
+		}
+	},{showWaiting:true});
+}
+
+*/
+/*-----保存重复设置----*/
+function saveWeeks(){
+	var weeks = {
+		monday:0,
+		tuesday:0,
+		wednesday:0,
+		thursday:0,
+		friday:0,
+		saturday:0,
+		sunday:0
+	}
+	if($('#monday').attr("checked") == true)	{		weeks.monday = 1; 		}
+	if($('#tuesday').attr("checked") == true)	{		weeks.tuesday = 1; 		}
+	if($('#wednesday').attr("checked") == true)	{		weeks.wednesday = 1;	}
+	if($('#thursday').attr("checked") == true)	{		weeks.thursday = 1;		}
+	if($('#friday').attr("checked") == true)	{		weeks.friday = 1;		}
+	if($('#saturday').attr("checked") == true)	{		weeks.saturday = 1; 	}
+	if($('#sunday').attr("checked") == true)	{		weeks.sunday = 1;		}
+	ajaxj("/app/updateCurveRepeat", {curveid:CurveObj[num].id,week:weeks,userId:userId}, function(data) {
+		if(d == "500"){
+			alert("修改失败");
+		}else{
+			alert("修改成功");
+		}	
+		$(".weekTable").hide();
+		$('#charts').show();
+	})
+}
+/*----实时刷新----*/
+function flush(){
+	//刷新折线图
+	ajaxj("/app/QueryCurve", {deviceId:deviceId,userId:userId}, function (data) {
+			CurveObj = data.data;
+			//lo(CurveObj[num].id);
+	});
+	/*--重新加载曲线数量--*/
+	ajaxj("/app/QueryCurveNum", {deviceId:deviceId,userId:userId}, function (nums) {//获取曲线数量
+		if(parseInt(nums.data)== 0){
+			Curvenum=0;
+		}else{
+			Curvenum = parseInt(nums.data)-1;
+		}
+	});
+}
+/*----------删除当前曲线设置-----------*/
+function delCurve(){
+	if(confirm("是否删除当前曲线?")){
+		ajaxj("/app/delCurve", {curveid:CurveObj[num].id,userId:userId}, function(data) {
+		var d = data.data;
+			if(d == "500"){
+				alert("删除失败");
+			}else{
+				alert("删除成功");
+				if(num == Curvenum){
+					num = 0 ;
+					//Curvenum = Curvenum - 1; 
+				}else{
+					num = num + 1 ;
+					//Curvenum = Curvenum - 1; 
+				}
+				//刷新折线图
+				ajaxj("/app/QueryCurve", {deviceId:deviceId,userId:userId}, function (data) {
+						CurveObj = data.data;
+						lo(CurveObj[num].id);
+				});
+				/*--重新加载曲线数量--*/
+				ajaxj("/app/QueryCurveNum", {deviceId:deviceId,userId:userId}, function (nums) {//获取曲线数量
+					if(parseInt(nums.data)== 0){
+						Curvenum=0;
+					}else{
+						Curvenum = parseInt(nums.data)-1;
+					}
+				});
+			}
+			
+		},{showWaiting:true});
+	}
+}
+/*---------添加折线图的点------------*/
+function addClocking(){
+	var tr = tr + "<TR>";
+		tr = tr + "<TD>";
+		tr = tr + "<input size=\"7\" name=\"clocking\" type=\"text\" value=\"\"/>";
+		tr = tr + "</TD>";
+		tr = tr + "<TD>";
+		tr = tr + "<select name=\"on_off\">"+
+					  "<option value =\"0\">关</option>"+
+					  "<option value =\"1\">开</option>"+
+					"</select>";
+		tr = tr + "</TD>";
+		tr = tr + "<TD>";
+		tr = tr + "<input size=\"7\" name=\"temp\" type=\"text\" value=\"\"/>";
+		tr = tr + "</TD>";
+		tr = tr + "<TD>";//制冷:1，制热:2，送风:3，除湿:4，自动:0
+		tr = tr + "<select name=\"mode\">"+
+					  "<option value =\"1\">制冷</option>"+
+					  "<option value =\"2\">制热</option>"+
+					  "<option value =\"3\">送风</option>"+
+					  "<option value =\"4\">除湿</option>"+
+					  "<option value =\"0\">自动</option>"+
+					"</select>";
+		tr = tr + "</TD>";
+		tr = tr + "<TD>";
+		tr = tr + "<select name=\"windspeed\">"+
+					  "<option value =\"1\">风速一</option>"+
+					  "<option value =\"2\">风速二</option>"+
+					  "<option value =\"3\">风速三</option>"+
+					  "<option value =\"4\">风速四</option>"+
+					  "<option value =\"5\">风速五</option>"+
+					"</select>";
+		tr = tr + "</TD>";
+		//定时计划开启或关闭
+			tr = tr + "<td>";
+			tr = tr + "<select name=\"startend\">"+
+						"<option value =\"1\">开启定时</option>"+
+						"<option value =\"0\">关闭定时</option>"+
+						"</select>";
+			tr = tr + "</td>";
+		//操作
+		tr = tr + "<td>";
+		tr = tr + "<input  onclick=\"delRow(this)\" type=\"submit\" value=\"删除\"/>";
+		tr = tr + "</td>";	
+		tr = tr + "</TR>";
+	$(".chartstable").append(tr); 
+}
+
+/*---------添加折线图的点保存------------*/
+function addClockingToSave(){
+	var Clocksetting = {
+		temp:$('#temp').val(),
+		clocking:$('#clocking').val(),
+		on_off:$('#on_off').val(),
+		windspeed:$('#windspeed').val(),
+		mode:$('#mode').val(),
+		appting:CurveObj[num]
+	}
+	var d = "";
+	ajaxj("/app/addCurveSetting", Clocksetting, function (data) {
+		d = data.data;
+	},{showWaiting:true});
+	$("#chartstableDiv").hide();
+	$('#charts').show();
+	if(d == "500"){
+		alert("保存失败");
+	}else{
+		alert("保存成功");
+	}
+}
+/*---------删除折线图的点-----------*/
+function delClocking(id){
+	var d = "";
+	if(confirm("确认删除?")){
+		ajaxj("/app/delCurveSetting", {clocksettingid:id,userId:userId}, function (data) {
+			d = data.data;
+		},{showWaiting:true});
+		$("#chartstableDiv").hide();
+		$('#charts').show();
+		if(d == "500"){
+			alert("删除失败");
+		}else{
+			alert("删除成功");
+		}
+	}
+}
+
+//关闭编辑窗口
+function closeEdit(){
+	if( confirm("是否保存?") ){
+		saveNewCurve();
+	}else{
+		$('#chartstableDiv').hide();
+		$('#charts').show();
+		appting = "";
+	}
+}
+//关闭定时设置
+function closeShowTimingSet(){
+	$('#showTimingSetDiv').hide();
+	$(".content").show();
+	appting = "";
+}
+
+//加载空调定时设置内容
+function ShowTimingSet(obj){
+	var weekName = ['周一','周二','周三','周四','周五','周六','周日'];
+	$('#charts').hide();
+	$(".showTimingSetTable tr").remove(); 
+	var tr = "<tr>"+
+        		"<th width=\"10%\"><font style=\"color:#ffffff;\">时间</font></th>"+
+        		"<th width=\"10%\"><font style=\"color:#ffffff;\">空调开关</font></th>"+
+        		"<th width=\"10%\"><font style=\"color:#ffffff;\">温度</font></th>"+
+        		"<th width=\"10%\"><font style=\"color:#ffffff;\">模式</font></th>"+
+        		"<th width=\"10%\"><font style=\"color:#ffffff;\">风速</font></th>"+
+        		"<th width=\"10%\"><font style=\"color:#ffffff;\">定时状态</font></th>"+
+        		"<th width=\"28%\"><font style=\"color:#ffffff;\">重复</font></th>"+
+        		"<th width=\"12%\"><font style=\"color:#ffffff;\">操作</font></th>"+
+        	"</tr>";
+		for(var j = 0 ; j < obj.length ; j++){
+			tr = tr + "<tr>";	
+			//时钟
+			tr = tr + "<td>";
+			tr = tr + "<font>"+obj[j].clocking+"</font>";
+			tr = tr + "<input size=\"5\" name=\"clocking\"  type=\"text\" style=\"display:none;\"  value=\""+obj[j].clocking+"\"/>";
+			tr = tr + "<input size=\"5\" name=\"clockSetId\"  type=\"hidden\"   value=\""+obj[j].id+"\"/>";
+			tr = tr + "</td>";
+			//开关
+			tr = tr + "<td>";
+			tr = tr + "<font>"+(  (obj[j].on_off == 1) ? "开" : "关"  )+"</font>"+
+			"<select name=\"on_off\" style=\"display:none\">"+
+			((obj[j].on_off == 1) ? 
+			"<option value=\"1\">开</option>"+
+			"<option value=\"0\">关</option>"
+			:
+			"<option value=\"0\">关</option>"+
+			"<option value=\"1\">开</option>")+
+			"</select>";
+			tr = tr + "</td>";
+			//温度
+			tr = tr + "<td>";
+			tr = tr + "<font>"+((obj[j].temp == null || obj[j].temp == "") ? 0 : obj[j].temp)+"</font>";
+			tr = tr + "<input size=\"7\" name=\"temp\"  type=\"text\" style=\"display:none;\"  value=\""+obj[j].temp+"\"/>";
+			tr = tr + "</td>";
+			//模式
+			var m = new Array("自动","制冷","制热","送风","除湿");
+			var seStr = "";
+			var seStrF = "";
+			for(var mi = 0 ; mi < m.length ; mi++){
+				if(mi != parseInt(obj[j].mode)){
+					seStr = seStr + "<option value=\""+mi+"\">"+m[mi]+"</option>";
+				}else{
+					seStrF = "<option value=\""+mi+"\">"+m[mi]+"</option>";
+				}
+			}
+			seStr = seStrF + seStr;
+			alert(seStr);
+			tr = tr + "<td>";//制冷:1，制热:2，送风:3，除湿:4，自动:0
+			tr = tr + "<font>"+m[parseInt(obj[j].mode)]+"</font>";
+			//tr = tr + "<input size=\"7\" name=\"mode\" style=\"display:none;\"  value=\""+obj[j].mode+"\"/>";
+			tr = tr + "<select name=\"mode\" style=\"display:none;\">"+ seStr + "</select>";
+			alert("<select name=\"mode\" style=\"display:none;\">"+ seStr + "</select>");
+			tr = tr + "</td>";
+			//风速
+			var w = new Array("风速一","风速二","风速三","风速四","风速五");
+			tr = tr + "<td>";
+			tr = tr + "<font>"+w[parseInt(obj[j].windspeed)]+"</font>";
+			tr = tr + "<input size=\"7\" name=\"windspeed\"  style=\"display:none;\" value=\""+obj[j].windspeed+"\"/>";
+			tr = tr + "</td>";
+			//定时计划开启或关闭
+			var se = new Array('关闭定时','开启定时');
+			tr = tr + "<td><font>"+
+			se[obj[j].startend]+"</font>"+
+			"<select name=\"startend\" style=\"display:none\">"+
+			(
+				(obj[j].startend == 1) ?
+				"<option value=\"1\">开启定时</option>"+
+				"<option value=\"0\">关闭定时</option>"
+				:
+				"<option value=\"0\">关闭定时</option>"+
+				"<option value=\"1\">开启定时</option>"
+			)
+			"</select>";
+			tr = tr + "</td>";
+			//重复状况
+			tr = tr + "<td id=\"repeat"+j+"\">"+
+			"   <font "+( obj[j].monday == "0" ? "style=\"display:none;\"" : "")+"  color=\"#ffffff\"> 周一 </font>  "+
+			"<input size=\"7\" name=\"monday\"  onclick=\"checking(this)\"  type=\"checkbox\" style=\"display:none;\" value=\""+obj[j].monday+"\"    "+( obj[j].monday == "1" ? " checked=\"true\" " : "")+"  />"+//星期一
+			"  <font "+( obj[j].tuesday == "0" ? "style=\"display:none;\"" : "")+"  color=\"#ffffff\">,周二 </font>   "+
+			"<input size=\"7\" name=\"tuesday\"  onclick=\"checking(this)\" type=\"checkbox\" style=\"display:none;\" value=\""+obj[j].tuesday+"\" "+( obj[j].tuesday == "1" ? " checked=\"true\" " : "")+" />"+//星期二
+			"   <font "+( obj[j].wednesday == "0" ? "style=\"display:none;\"" : "")+"  color=\"#ffffff\">,周三 </font>   "+
+			"<input size=\"7\" name=\"wednesday\"  onclick=\"checking(this)\" type=\"checkbox\" style=\"display:none;\" value=\""+obj[j].wednesday+"\" "+( obj[j].wednesday == "1" ? " checked=\"true\" " : "")+" />"+//星期三
+			" <font "+( obj[j].thursday == "0" ? "style=\"display:none;\"" : "")+"  color=\"#ffffff\">,周四</font>  "+
+			"<input size=\"7\" name=\"thursday\"  onclick=\"checking(this)\" type=\"checkbox\" style=\"display:none;\" value=\""+obj[j].thursday+"\" "+( obj[j].thursday == "1" ? " checked=\"true\" " : "")+" />"+//星期四
+			"   <font "+( obj[j].friday == "0" ? "style=\"display:none;\"" : "")+"  color=\"#ffffff\">,周五 </font>    "+
+			"<input size=\"7\" name=\"friday\"  onclick=\"checking(this)\" type=\"checkbox\" style=\"display:none;\" value=\""+obj[j].startend+"\" "+( obj[j].startend == "1" ? " checked=\"true\" " : "")+" />"+//星期五
+			"<font "+( obj[j].saturday == "0" ? "style=\"display:none;\"" : "")+"  color=\"#ffffff\">,周六 </font>   "+
+			"<input size=\"7\" name=\"saturday\"  onclick=\"checking(this)\" type=\"checkbox\" style=\"display:none;\" value=\""+obj[j].saturday+"\" "+( obj[j].saturday == "1" ? " checked=\"true\" " : "")+" />"+//星期六
+			"   <font "+( obj[j].sunday == "0" ? "style=\"display:none;\"" : "")+"  color=\"#ffffff\">,周日 </font>  ";
+			tr = tr + "<input size=\"7\" name=\"sunday\" style=\"display:none;\"  type=\"checkbox\" value=\""+obj[j].sunday+"\"/>";//星期日
+			tr = tr + "</td>";
+			//操作
+			tr = tr + "<td>";
+			tr = tr + "<input onclick=\"editTimingSet(this.parentNode.parentNode,"+j+")\" type=\"submit\" value=\"编辑\"/>&nbsp&nbsp";
+			tr = tr + "<input  onclick=\"delTR(this,'"+obj[j].id+"')\" type=\"submit\" value=\"删除\"/>";
+			
+			tr = tr + "<input style=\"display:none;\" onclick=\"saveClockSet(this.parentNode.parentNode,'"+obj[j].id+"')\" type=\"submit\" value=\"保存\"/>&nbsp&nbsp";
+			tr = tr + "<input style=\"display:none;\" onclick=\"cancelClockSetAlone(this.parentNode.parentNode,'"+obj[j].id+"')\" type=\"submit\" value=\"取消\"/>";
+			tr = tr + "</td>";
+			tr = tr + "</tr>";
+			//alert(tr);
+	}
+	$(".showTimingSetTable").append(tr); 
+	$(".content").hide();
+	$(".Raircon").hide();
+	$(".contentInfo").hide();
+	$(".content").hide();
+	$(".contentInfoToSetting").hide();
+	$("#showTimingSetDiv").show();
+}
+/*-------saveClockSetAlone------------*/
+function saveClockSetAlone(obj,id){
+	var i = 0;
+	$(obj).children().each( function(){
+		i++;
+		if(i < 7){
+			$(this).children().eq(0).show();
+			$(this).children().eq(1).hide();
+		}
+		if(i == 7){
+			$(this).children().eq(1).hide();
+			$(this).children().eq(3).hide();
+			$(this).children().eq(5).hide();
+			$(this).children().eq(7).hide();
+			$(this).children().eq(9).hide();
+			$(this).children().eq(11).hide();
+			$(this).children().eq(13).hide();
+		}
+		if(i == 8){
+			$(this).children().eq(0).show();
+			$(this).children().eq(1).show();
+			$(this).children().eq(2).hide();
+			$(this).children().eq(3).hide();
+		}
+	} );
+}
+/*-------cancelClockSetAlone------------*/
+function cancelClockSetAlone(obj,id){
+	var i = 0;
+	$(obj).children().each( function(){
+		i++;
+		if(i < 7){
+			$(this).children().eq(0).show();
+			$(this).children().eq(1).hide();
+		}
+		if(i == 7){
+			$(this).children().eq(1).hide();
+			$(this).children().eq(3).hide();
+			$(this).children().eq(5).hide();
+			$(this).children().eq(7).hide();
+			$(this).children().eq(9).hide();
+			$(this).children().eq(11).hide();
+			$(this).children().eq(13).hide();
+		}
+		if(i == 8){
+			$(this).children().eq(0).show();
+			$(this).children().eq(1).show();
+			$(this).children().eq(2).hide();
+			$(this).children().eq(3).hide();
+		}
+	} );
+}
+/*---------编辑空调定时功能--------*/
+function editTimingSet(obj,j){
+	//$(obj).css("background-color","#ffffff");
+	//$(obj).css("border-collapse","collapse");
+	var i = 0;
+	$(obj).children().each( function(){
+		i++;
+		if(i < 7){
+			$(this).children().eq(1).show();
+			$(this).children().eq(0).hide();
+		}	
+		if(i == 7){
+			$(this).children().eq(0).show();
+			$(this).children().eq(1).show();
+			$(this).children().eq(2).show();
+			$(this).children().eq(3).show();
+			$(this).children().eq(4).show();
+			$(this).children().eq(5).show();
+			$(this).children().eq(6).show();
+			$(this).children().eq(7).show();
+			$(this).children().eq(8).show();
+			$(this).children().eq(9).show();
+			$(this).children().eq(10).show();
+			$(this).children().eq(11).show();
+			$(this).children().eq(12).show();
+			$(this).children().eq(13).show();
+		}
+		if(i == 8){
+			$(this).children().eq(0).hide();
+			$(this).children().eq(1).hide();
+			$(this).children().eq(2).show();
+			$(this).children().eq(3).show();
+		}
+	} );
+}
+/*------添加空调定时设置-------*/
+function addShowTimingSet(){
+    var TrROW = $(".showTimingSetTable tr").length;
+	var weekName = ['星期一','星期二','星期三','星期四','星期五','星期六','星期日'];
+	var tr = "<tr>";	
+		//时钟
+		tr = tr + "<td>";
+		tr = tr + "<input size=\"7\"   type=\"hidden\" value=\"\"/>";
+		tr = tr + "<input size=\"7\" id=\"clocking\" type=\"text\" value=\"\"/>";
+		tr = tr + "</td>";
+		//开关
+		tr = tr + "<td>";
+		tr = tr + "<input size=\"7\"  type=\"hidden\" value=\"\"/>";
+		tr = tr + "<select name=\"on_off\">"+
+						"<option value =\"1\">开</option>"+
+						"<option value =\"0\">关</option>"+
+				"</select>";
+		tr = tr + "</td>";
+		//温度
+		tr = tr + "<td>";
+		tr = tr + "<input size=\"7\"  type=\"hidden\" value=\"\"/>";
+		tr = tr + "<input size=\"7\" name=\"temp\" type=\"text\" value=\"\"/>";
+		tr = tr + "</td>";
+		//模式	
+		var m = new Array("自动","制冷","制热","送风","除湿");
+		tr = tr + "<td>";//制冷:1，制热:2，送风:3，除湿:4，自动:0
+		tr = tr + "<input size=\"7\" type=\"hidden\" value=\"\"/>";
+		tr = tr + "<select name=\"mode\">"+
+					  "<option value =\"2\">制热</option>"+
+					  "<option value =\"3\">送风</option>"+
+					  "<option value =\"4\">除湿</option>"+
+					  "<option value =\"0\">自动</option>"+
+					  "<option value =\"1\">制冷</option>"+
+					"</select>";
+		tr = tr + "</td>";
+		//风速
+		var w = new Array("风速一","风速二","风速三","风速四","风速五");
+		tr = tr + "<td>";
+		tr = tr + "<input size=\"7\"  type=\"hidden\" value=\"\"/>";
+		tr = tr + "<select name=\"windspeed\">"+
+					"<option value =\"1\">风速一</option>"+
+					"<option value =\"2\">风速二</option>"+
+					"<option value =\"3\">风速三</option>"+
+					"<option value =\"4\">风速四</option>"+
+					"<option value =\"5\">风速五</option>"+
+					"</select>";
+		tr = tr + "</td>";
+		//定时计划开启或关闭
+		tr = tr + "<td>";
+		tr = tr + "<input size=\"7\"  type=\"hidden\" value=\"\"/>";
+		tr = tr + "<select name=\"startend\">"+
+					"<option value =\"1\">开启定时</option>"+
+					"<option value =\"0\">关闭定时</option>"+
+					"</select>";
+		tr = tr + "</td>";
+		//重复状况
+		tr = tr + "<td id=\"repeat"+TrROW+"\">"+
+		" <font color=\"#ffffff\"> 周一 </font> <input name=\"monday\" onclick=\"checking(this)\" type=\"checkbox\"  value=\"0\" />   "+
+		" <font color=\"#ffffff\"> 周二 </font> <input name=\"tuesday\" onclick=\"checking(this)\" type=\"checkbox\" value=\"0\" />   "+
+		" <font color=\"#ffffff\"> 周三 </font> <input name=\"wednesday\" onclick=\"checking(this)\" type=\"checkbox\" value=\"0\" />   "+
+		" <font color=\"#ffffff\"> 周四 </font> <input name=\"thursday\" onclick=\"checking(this)\" type=\"checkbox\" value=\"0\" />  "+
+		" <font color=\"#ffffff\"> 周五 </font> <input name=\"friday\" onclick=\"checking(this)\" type=\"checkbox\" value=\"0\" />   "+
+		" <font color=\"#ffffff\"> 周六 </font> <input name=\"saturday\" onclick=\"checking(this)\" type=\"checkbox\" value=\"0\" />   "+
+		" <font color=\"#ffffff\"> 周日 </font> <input name=\"sunday\" onclick=\"checking(this)\" type=\"checkbox\" value=\"0\" />   ";
+		tr = tr + "</td>";
+		//操作
+		tr = tr + "<td>";
+		tr = tr + "<input  onclick=\"saveClockSet(this.parentNode.parentNode,'')\" type=\"button\" value=\"保存\"/>&nbsp&nbsp";
+		tr = tr + "<input  onclick=\"delTR2(this)\" type=\"button\" value=\"取消\"/>";
+		tr = tr + "</td>";
+		$(".showTimingSetTable").append(tr); 	
+}
+/*--------保存---------*/
+function saveClockSet(obj,id){
+	var Clocksetting = {};
+	Clocksetting.id = id;
+	var i = 0;
+	$(obj).children().each( function(){
+		i++;
+		if(i < 7){
+			if( $(this).children().eq(1).attr("name") == "clocking" ){
+				Clocksetting.clocking = $(this).children().eq(1).val();
+				$(this).children().append(Clocksetting.clocking);
+			} 
+			if( $(this).children().eq(1).attr("name") == "on_off" ){
+				Clocksetting.on_off=$(this).children().eq(1).val();
+				$(this).children().append(Clocksetting.on_off == 1 ? "开":"关");
+			}
+			if( $(this).children().eq(1).attr("name") == "temp" ){
+				Clocksetting.temp=$(this).children().eq(1).val();
+				$(this).children().append(Clocksetting.temp);
+			}
+			if( $(this).children().eq(1).attr("name") == "mode" ){
+				Clocksetting.mode=$(this).children().eq(1).val();
+				//制冷:1，制热:2，送风:3，除湿:4，自动:0
+				var modes = ["自动","制冷","制热","送风","除湿"];
+				$(this).children().append(modes[parseInt(Clocksetting.mode)]);
+			}
+			if( $(this).children().eq(1).attr("name") == "windspeed" ){
+				var windspeeds = ["风速一","风速二","风速三","风速四","风速五","风速六","风速七"];
+				Clocksetting.windspeed=$(this).children().eq(1).val();
+				$(this).children().append( windspeeds[parseInt(Clocksetting.windspeed)] );
+			}
+			if( $(this).children().eq(1).attr("name") == "startend" ){
+				Clocksetting.startend=$(this).children().eq(1).val();
+				$(this).children().append(Clocksetting.startend == 1 ? "开启定时":"关闭关闭");
+			}
+		}
+		if(i == 7){
+			Clocksetting.monday = $(this).children().eq(1).val();//星期一monday
+			Clocksetting.tuesday = $(this).children().eq(3).val();//星期二tuesday
+			Clocksetting.wednesday = $(this).children().eq(5).val();//星期三wednesday
+			Clocksetting.thursday = $(this).children().eq(7).val();//星期四thursday
+			Clocksetting.friday = $(this).children().eq(9).val();//星期五friday
+			Clocksetting.saturday = $(this).children().eq(11).val();//星期六saturday
+			Clocksetting.sunday = $(this).children().eq(13).val();//星期日sunday
+			for(var ii = 0 ; ii < 14 ;ii++){
+				$(this).children().eq(ii).hide();
+			}
+			var tdT = "";
+			if(Clocksetting.monday == "1"){ tdT = "<font>周一</font>"; }
+			if(Clocksetting.tuesday == "1"){ tdT = tdT + "<font>周二</font>"; }
+			if(Clocksetting.wednesday == "1"){ tdT = tdT + "<font>周三</font>"; }
+			if(Clocksetting.thursday == "1"){ tdT = tdT + "<font>周四</font>"; }
+			if(Clocksetting.friday == "1"){ tdT = tdT + "<font>周五</font>"; }
+			if(Clocksetting.saturday == "1"){ tdT = tdT + "<font>周六</font>"; }
+			if(Clocksetting.sunday == "1"){ tdT = tdT + "<font>周日</font>"; }
+			$(this).children().append(tdT);
+		}
+		if(i == 8){
+			$(this).children().eq(0).show();
+			$(this).children().eq(1).show();
+			$(this).children().eq(2).hide();
+			$(this).children().eq(3).hide();
+		}
+	} );
+	var d = "";  
+	ajaxj("/app/UpdateShowTimingSet", {Clocksetting:Clocksetting,spmsDevice:deviceId,userId:userId}, function (data) {
+		$("#chartstableDiv").hide();
+		d = data.data;
+		if(d == "500"){
+			alert("保存失败");
+		}else{
+			alert("保存成功");
+		}
+		ajaxj("/app/QueryTimingSet", {deviceId:deviceId,userId:userId}, function (data) {
+			timingSetObj = data.data;
+			//alert(timingSetObj);
+			ShowTimingSet(timingSetObj);
+		})
+	},{showWaiting:true});
+}	
+//复选框勾选
+function checking(obj){
+	if( $(obj).val() == "0" ){
+		$(obj).val("1");
+	}else{
+		$(obj).val("0");
+	}
+}	
+
+/*-----删除TR----*/
+function delTR(row,id){
+	if(confirm("确定执行此操作?")){
+		//alert(id);
+		$(row).parent().parent().remove(); 	
+	 	if(id!=''){
+		 	ajaxj("/app/delCurveSetting", {clocksettingid:id,userId:userId}, function (data) {
+				d = data.data;
+			},{showWaiting:true});
+	 	}
+	}
+}
+/*-----删除TR  不走后台的----*/
+function delTR2(row){
+	if(confirm("不保存吗?")){
+		$(row).parent().parent().remove(); 	
+	}
+}
+
+/*--------打开折线图----------*/
+function openLineChart(){
+	/*--加载曲线内容--*/
+	ajaxj("/app/QueryCurve", {deviceId:deviceId,userId:userId}, function (data) {
+		CurveObj = data.data;
+		lo(CurveObj[num].id);
+		weekSetforCurve();
+	})/*--加载曲线数量--*/
+	ajaxj("/app/QueryCurveNum", {deviceId:getURLParam('deviceId'),userId:userId}, function (nums) {//获取曲线数量
+		if(parseInt(nums.data)== 0){
+			Curvenum=0;
+		}else{
+			Curvenum = parseInt(nums.data)-1;
+		}
+	})
+}
+
+/*---------加载重复设置信息（曲线图）--------*/
+function weekSetforCurve(){
+	var obj = CurveObj[num];
+	var str = "";
+	if(deviceId != ""){
+		if(obj!=null){
+			if(obj.monday!=null && obj.monday!="0"){
+				str = str + "&nbsp<span class=\"mondayRepeatClass\" style=\"background-color:#808080\" val=\""+obj.monday+"\">周一&nbsp</span>";			
+			}
+			if(obj.tuesday!=null && obj.tuesday!="0"){
+				str = str + "<span class=\"tuesdayRepeatClass\" style=\"background-color:#808080\" val=\""+obj.tuesday+"\">周二&nbsp</span>";	
+			}
+			if(obj.wednesday!=null && obj.wednesday!="0"){
+				str = str + "<span class=\"wednesdayRepeatClass\" style=\"background-color:#808080\" val=\""+obj.wednesday+"\">周三&nbsp</span>";	
+			}
+			if(obj.thursday!=null && obj.thursday!="0"){
+				str = str + "<span class=\"thursdayRepeatClass\" style=\"background-color:#808080\" val=\""+obj.thursday+"\">周四&nbsp</span>";	
+			}
+			if(obj.firday!=null && obj.firday!="0"){
+				str = str + "<span class=\"firdayRepeatClass\" style=\"background-color:#808080\" val=\""+obj.firday+"\">周五&nbsp</span>";	
+			}
+			if(obj.saturday!=null && obj.saturday!="0"){
+				str = str + "<span class=\"saturdayRepeatClass\" style=\"background-color:#808080\" val=\""+obj.saturday+"\">周六&nbsp</span>";	
+			}
+			if(obj.sunday!=null && obj.sunday!="0"){
+				str = str + "<span class=\"sundayRepeatClass\" style=\"background-color:#808080\" val=\""+obj.sunday+"\">周日&nbsp</span>";	
+			}
+		}
+		$(".repeatClass").append(str); 
+	}
+	
+	var str2 = "<input type=\"submit\" name=\"button\" id=\"button\" onclick=\"edit1()\" class=\"btn-add\" value=\"添加节点\" />";
+		str2 = str2 + "<input type=\"hidden\" val=\""+obj.id+"\" class=\"RepeatClassId\"/>";
+	$("#edit").append(str2); 
+}
+function edit1(){
+	window.location.href = "http://127.0.0.1/param?r={\"type\":\"add\",\"num\":\""+num+"\"}";
+}
+function del(id){
+	window.location.href = "http://127.0.0.1/param?r={\"num\":\""+num+"\",\"type\":\"delete\",\"id\":\""+id+"\"}";
+}
+/*------关闭重复设置窗口------*/
+function closeRepeatPopup(){
+	$(".RepeatPopup").hide();
+	$(".RepeatPopup div").remove();
+	$(".RepeatPopup h4").remove();
+}
+/*------关闭设置窗口------*/
+function closeWeekDiv(){
+	$(".weekDiv").hide();
+}
+/*---------保存重复设置----------*/
+function saveWeekSet(){
+	var weeks = {
+			monday:$("#mondayForCurve").val(),
+			tuesday:$("#tuesdayForCurve").val(),
+			wednesday:$("#wednesdayForCurve").val(),
+			thursday:$("#thursdayForCurve").val(),
+			friday:$("#fridayForCurve").val(),
+			saturday:$("#saturdayForCurve").val(),
+			sunday:$("#sundayForCurve").val()
+		}
+	//修改之前先查询判断一下是否有重复设置的
+	ajaxj("/app/queryCurveRepeat", {curveid:CurveObj[num].id,week:weeks,userId:userId}, function(data) {
+		var da = data.data;
+		if(da == "1"){
+			if(confirm("有重复设置，是否继续?")){
+				ajaxj("/app/updateCurveRepeat", {curveid:CurveObj[num].id,week:weeks,userId:userId}, function(data) {
+					var d = data.data;
+					if(d == "500"){
+						alert("设置失败");
+					}else{
+						alert("设置成功");
+					}
+					$(".weekTable").hide();  
+					$('#charts').show();
+				})
+			}
+		}else{
+			ajaxj("/app/updateCurveRepeat", {curveid:CurveObj[num].id,week:weeks,userId:userId}, function(data) {
+				var d = data.data;
+				if(d == "500"){
+					alert("修改失败");
+				}else{
+					alert("修改成功");
+				}
+				$(".weekTable").hide();
+				$('#charts').show();
+			})
+		}
+	})
+} 
+
+/*-----------------空调异常相关----------------------*/
+$(function(){
+	//setInterval('getError()', 5000); 
+})
+var errorData = "";
+var errorControl  = "";
+function getError(){
+	ajaxj("/deviceError/getDeviceError", {deviceId:deviceId,userId:userId}, function(data) {
+		var obj = data.data;
+		if( obj.length > 0 ){
+			for(var j = 0 ; j < obj.length ; j++){
+				//alert(obj[j].errorExplain);
+				errorData = "<div class=\"errorDataClass\" style='margin-right:30%;margin-top:9%;float:right;'>尊敬的用户，您好，您的空调当前处于异常状态,<br />不能进行<span style='color:#3399FF;'>温度</span>调整，您可以联系售后人员为您解决。</div>"
+				//异常代码
+				errorStateClick();
+				errorControl = "1";
+			}
+		}
+	})
+}
+
+function errorState(){
+	if( $(".errorDataClass").is(":visible") == false ){
+		//显示异常信息
+		$(".content_kt_nr_sdwd,.content_kt_nr_ms,.content_kt_nr_fs").css("display","none");
+		$(".errorDataClass").remove();
+		$(".content_kt_nr").append(errorData);
+	}else{
+		//隐藏异常信息
+		$(".content_kt_nr_sdwd,.content_kt_nr_ms,.content_kt_nr_fs").css("display","inline");
+		$(".errorDataClass").css("display","none");
+	}
+}
+
+function errorStateClick(){
+	$('.content_kt_nr_kg_ktpic1').addClass("airconditioning_notopen");
+}	
+
+
+
+
+
+function ajaxj(url, data, callBack, conf) {
+
+//    var tempasync = true;
+//    var divObj = $("<div><div class='progress-label'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div></div>");
+    var divObj = $('<div id="loadingMaskLayerDiv" style="filter:alpha(opacity=50);display:none;width:100%;height:100%;z-index:1000;background-color:gray;opacity:0.5;position:fixed;left:0px;top:0px;"><div class="loading"><i></i><span id="windowMaskLayerInfo"></span></div></div>');
+    var successInfo = ""
+//    var theConf = {
+//    		
+//    }
+//    if (conf) {
+    	var theConf = {
+    			async:true,
+    			showWaiting:false,
+    			handdingInfo:"处理中",
+    			successInfo:"处理成功",
+    			failtureInfo:"处理失败"
+    			
+    	}
+    	$.extend(theConf,conf);
+        if (theConf.showWaiting) {
+        	$('body').append(divObj);
+        	$('#windowMaskLayerInfo',divObj).text(theConf.handdingInfo);
+        	divObj.show();
+        }
+//    } 
+
+    $.ajax({
+        type: "POST",
+        url: "http://" + address + "/spms" + url,
+        timeout: 600000,
+        data: JSON.stringify(data),
+        async: theConf.async,
+        dataType: "json",
+        contentType: "application/json",
+        success: function(nowData, textStatus, XMLHttpRequest) {
+            var info = theConf.successInfo;
+            if(nowData) {
+                if(nowData.message) {
+                    if(nowData.message.errorMsg) {
+                        info=theConf.failtureInfo;
+                    }
+                }
+            }
+        	$('#windowMaskLayerInfo',divObj).text();
+        	setTimeout(function(){
+        		divObj.remove();
+        	},1000)
+            var obj = {};
+            obj.data = nowData;
+            obj.result = true;
+            if (textStatus != "success") {
+                obj.result = false;
+            }
+
+            if(nowData.common_error_info) {
+            	if(nowData.common_error_info.exceptionType == "0001") {
+            		window.location.href=nowData.common_error_info.action;
+            	} else if(nowData.common_error_info.exceptionType == "0002") {
+            		$.alert(nowData.common_error_info.message);
+            	}
+
+            } else {
+            	callBack(obj, textStatus, XMLHttpRequest);
+            }
+        },
+		error: function(msg, a, b, c) {
+        	$('#windowMaskLayerInfo',divObj).text(theConf.failtureInfo);
+        	setTimeout(function(){
+        		divObj.remove();
+        	},1000)
+    	    if (msg.status == 0) {
+                return
+            } else {
+                if (msg.statusText == "OK" && msg.status == "200") {
+                    if (conf && conf.noFrame) {
+                    } else {
+                        /*if (window.parent) {
+                        	if(window.parent.parent) {
+                        		window.parent.parent.location.href = clickmedBaseUrl + clickmedAdminPath + "/doLogin";
+                        	} else {
+                        		window.parent.location.href = clickmedBaseUrl + clickmedAdminPath + "/doLogin";
+                        	}
+                        } else {
+                            window.location.href = clickmedBaseUrl + clickmedAdminPath + "/doLogin";
+                        }*/
+                    }
+
+                } else {
+					window.location.href = "http://127.0.0.1/param?r={\"type\":\"error\"}";
+//                    	$('#windowMaskLayerInfo',divObj).text("处理失败");
+//                    	  window.location.href = clickmedBaseUrl + clickmedAdminPath + "/view/common/index.html"
+                }
+            }
+        }
+    });
+}
+/*--------加载折线图重复信息-------------*/

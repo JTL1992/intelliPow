@@ -1,0 +1,145 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".UI.SafeSettingFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="#DEDEDE">
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:padding="20dp"
+            android:background="#dedede"
+            android:id="@+id/old">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="旧密码："
+                android:layout_centerVertical="true"
+                android:layout_alignParentLeft="true"
+                android:textColor="#333333"
+                android:textSize="20sp"
+                android:id="@+id/oldpassword" />
+        </RelativeLayout>
+
+        <EditText
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword"
+            android:ems="10"
+            android:id="@+id/oldpass"
+            android:layout_below="@+id/old"
+            android:hint="6-16位，区分大小写。"
+            android:textColorHint="#999999"
+            android:background="#ffffff"
+            android:autoText="false"
+            android:password="true"
+            android:padding="10dp"
+            android:textSize="20sp"
+            android:textColor="#000"
+            android:editable="true"
+            android:enabled="true"
+            android:focusable="true"
+            android:selectAllOnFocus="true"
+            android:cursorVisible="true"
+            android:textCursorDrawable="@drawable/curser_shape"/>
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/oldpass"
+            android:background="#dedede"
+            android:padding="20dp"
+            android:id="@+id/nowpasswold">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="新密码："
+                android:id="@+id/now"
+                android:textColor="#333333"
+                android:textSize="23sp"
+                />
+        </RelativeLayout>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword"
+            android:ems="10"
+            android:id="@+id/name_door_and_win"
+            android:layout_below="@+id/nowpasswold"
+            android:textSize="20sp"
+            android:textColorHint="#999999"
+            android:hint="6-16位，区分大小写。"
+            android:padding="15dp"
+            android:background="#ffffff"
+            android:textColor="#000"
+            android:focusable="true"
+            android:enabled="true"
+            android:editable="true"
+            android:password="true"
+            android:selectAllOnFocus="true"
+            />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:text="确 定"
+            android:id="@+id/btn_confirm"
+            android:layout_below="@+id/name_door_and_win"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:textSize="20sp"
+            android:textColor="#ffffff"
+            android:background="@drawable/bg_secret_setting"
+            android:layout_marginTop="40dp" />
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_alignLeft="@+id/btn_confirm"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_below="@+id/btn_confirm">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="显示密码"
+                android:id="@+id/xianshi"
+                android:textColor="#666666"
+                android:textSize="15sp"
+                android:layout_toRightOf="@+id/check"
+                android:layout_marginLeft="5dp"
+                android:layout_centerVertical="true" />
+
+            <RelativeLayout
+                android:layout_width="20dp"
+                android:layout_height="fill_parent"
+                android:id="@+id/check">
+
+                <ImageButton
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:id="@+id/btn_check"
+                    android:background="@drawable/btn_aqsz_check"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true" />
+            </RelativeLayout>
+        </RelativeLayout>
+    </RelativeLayout>
+
+</FrameLayout>

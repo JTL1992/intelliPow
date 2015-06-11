@@ -1,0 +1,147 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.harmazing.intelligentpow.UI.DoorAty"
+    android:background="#dedede">
+
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/door_relative"
+        android:background="#dedede">
+
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="150dp"
+            android:id="@+id/icon_door"
+            android:background="@drawable/icon_door_open_big"
+            android:layout_alignParentLeft="true"
+            android:layout_marginTop="30dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="当前状态："
+            android:id="@+id/state_now"
+            android:textSize="20sp"
+            android:textColor="#333333"
+            android:layout_toRightOf="@+id/icon_door"
+            android:layout_alignTop="@+id/icon_door"
+            android:layout_marginLeft="50dp"
+            android:layout_marginTop="20dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="电量："
+            android:id="@+id/battery_left"
+            android:textColor="#333333"
+            android:textSize="20sp"
+            android:layout_below="@+id/state_now"
+            android:layout_alignRight="@+id/state_now"
+            android:layout_marginTop="20dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="开"
+            android:id="@+id/state_door"
+            android:textColor="#ff8400"
+            android:textSize="20sp"
+            android:layout_toRightOf="@+id/state_now"
+            android:layout_alignTop="@+id/state_now"
+            android:layout_marginLeft="10dp" />
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="35dp"
+            android:id="@+id/icon_baterry"
+            android:background="@drawable/icon_electricity_2"
+            android:layout_below="@+id/state_door"
+            android:layout_alignLeft="@+id/state_door"
+            android:layout_marginTop="10dp" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/door_relative"
+        android:background="#ffffff"
+        android:layout_alignParentLeft="false"
+        android:id="@+id/kaiguan">
+
+        <ImageView
+            android:layout_width="23dp"
+            android:layout_height="20dp"
+            android:id="@+id/btn_back"
+            android:background="@drawable/icon_record"
+            android:layout_marginLeft="20dp"
+            android:layout_alignParentLeft="true"
+            android:layout_marginTop="20dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="开关记录"
+            android:id="@+id/this_title"
+            android:textColor="#333333"
+            android:textSize="18sp"
+            android:layout_toRightOf="@+id/btn_back"
+            android:layout_alignBottom="@+id/btn_back"
+            android:layout_marginLeft="10dp" />
+    </RelativeLayout>
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="20dp"
+        android:id="@+id/custom"
+        android:background="#ffffff"
+        android:layout_below="@+id/kaiguan" />
+
+    <com.harmazing.intelligentpow.view.CrossWebView
+        android:layout_width="fill_parent"
+        android:layout_height="100dp"
+        android:id="@+id/webView"
+        android:layout_below="@+id/custom"
+        android:background="#ffffff"
+        android:layout_above="@+id/modify"
+        android:layout_marginBottom="20dp" />
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="50dp"
+        android:background="#ffffff"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="false"
+        android:layout_alignParentStart="true"
+        android:id="@+id/modify"
+        android:layout_marginBottom="10dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="修改设备名称"
+            android:id="@+id/modify_name"
+            android:textColor="#333333"
+            android:textSize="18sp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="20dp" />
+
+        <ImageButton
+            android:layout_width="12dp"
+            android:layout_height="18dp"
+            android:id="@+id/image"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="20dp"
+            android:background="@drawable/sel_aircondition_left" />
+
+    </RelativeLayout>
+
+</RelativeLayout>

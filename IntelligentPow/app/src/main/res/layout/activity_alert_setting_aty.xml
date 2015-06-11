@@ -1,0 +1,264 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:background="#dedede">
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="45dp"
+        android:id="@+id/title_alert_setting"
+        android:background="@drawable/bg_aircondition_bar"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="定时设置"
+            android:id="@+id/tx_forget_title"
+            android:layout_centerInParent="true"
+            android:textSize="20sp" />
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:id="@+id/btn_back"
+            android:background="@drawable/icon_back_left"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="20dp" />
+
+        <Button
+            android:layout_width="50dp"
+            android:layout_height="30dp"
+            android:text="确定"
+            android:id="@+id/btn_confirm"
+            android:background="@drawable/btn_round_blue"
+            android:textSize="13sp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="20dp" />
+
+    </RelativeLayout>
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent" android:layout_height="50dp"
+        android:id="@+id/layout_time"
+        android:layout_below="@+id/title_alert_setting">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="时间选择"
+            android:id="@+id/key_time"
+            android:layout_marginLeft="20dp"
+            android:layout_centerVertical="true"
+            android:textSize="20sp"
+            android:textColor="#000000" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="这里是value"
+            android:id="@+id/value_time"
+            android:textColor="#000000"
+            android:textSize="20sp"
+            android:layout_toLeftOf="@+id/image_time"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="30dp" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/image_time"
+            android:background="@drawable/sel_aircondition_left"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="20dp" />
+    </RelativeLayout>
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent" android:layout_height="50dp"
+        android:id="@+id/layout_turn"
+        android:layout_below="@+id/layout_time">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="开关设置"
+            android:id="@+id/key_turn"
+            android:layout_marginLeft="20dp"
+            android:layout_centerVertical="true"
+            android:textSize="20sp"
+            android:textColor="#000000" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="这里是value"
+            android:id="@+id/value_turn"
+            android:textColor="#000000"
+            android:textSize="20sp"
+            android:layout_toLeftOf="@+id/image_turn"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="30dp" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/image_turn"
+            android:background="@drawable/sel_aircondition_left"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="20dp" />
+    </RelativeLayout>
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent" android:layout_height="50dp"
+        android:id="@+id/layout_temp"
+        android:layout_below="@+id/layout_turn">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="温度设置"
+            android:id="@+id/key_temp"
+            android:layout_marginLeft="20dp"
+            android:layout_centerVertical="true"
+            android:textSize="20sp"
+            android:textColor="#000000" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="这里是value"
+            android:id="@+id/value_temp"
+            android:textColor="#000000"
+            android:textSize="20sp"
+            android:layout_toLeftOf="@+id/image_temp"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="30dp" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/image_temp"
+            android:background="@drawable/sel_aircondition_left"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="20dp" />
+    </RelativeLayout>
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent" android:layout_height="50dp"
+        android:id="@+id/layout_mode"
+        android:layout_below="@+id/layout_temp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="模式设置"
+            android:id="@+id/key_mode"
+            android:layout_marginLeft="20dp"
+            android:layout_centerVertical="true"
+            android:textSize="20sp"
+            android:textColor="#000000" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="这里是value"
+            android:id="@+id/value_mode"
+            android:textColor="#000000"
+            android:textSize="20sp"
+            android:layout_toLeftOf="@+id/image_mode"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="30dp" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/image_mode"
+            android:background="@drawable/sel_aircondition_left"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="20dp" />
+    </RelativeLayout>
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent" android:layout_height="50dp"
+        android:id="@+id/layout_wind"
+        android:layout_below="@+id/layout_mode">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="风速设置"
+            android:id="@+id/key_wind"
+            android:layout_marginLeft="20dp"
+            android:layout_centerVertical="true"
+            android:textSize="20sp"
+            android:textColor="#000000" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="这里是value"
+            android:id="@+id/value_wind"
+            android:textColor="#000000"
+            android:textSize="20sp"
+            android:layout_toLeftOf="@+id/image_wind"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="30dp" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/image_wind"
+            android:background="@drawable/sel_aircondition_left"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="20dp" />
+    </RelativeLayout>
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent" android:layout_height="50dp"
+        android:id="@+id/layout_day"
+        android:layout_below="@+id/layout_wind">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="重复设置"
+            android:id="@+id/key_day"
+            android:layout_marginLeft="20dp"
+            android:layout_centerVertical="true"
+            android:textSize="20sp"
+            android:textColor="#000000" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="这里是value"
+            android:id="@+id/value_day"
+            android:textColor="#000000"
+            android:textSize="20sp"
+            android:layout_toLeftOf="@+id/image_day"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="30dp" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/image_day"
+            android:background="@drawable/sel_aircondition_left"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="20dp" />
+    </RelativeLayout>
+
+</RelativeLayout>

@@ -1,0 +1,43 @@
+<resources>
+    <style name="AppTheme" parent="@android:style/Theme.Holo">
+        <!--<item name="android:actionBarStyle">@style/ActionBarStyle</item>-->
+        <item name="homeAsUpIndicator">@drawable/actionbar_indector</item>
+        <item name="android:homeAsUpIndicator">@drawable/actionbar_indector</item>
+    </style>
+    <style name="ActionBarStyle"  parent="@android:style/Theme.Holo">
+        <item name="android:background">@drawable/bg_actionbar_titile</item>
+
+    </style>
+    <style name="SliderCheckBox" parent="@android:style/Widget.CompoundButton.CheckBox">
+
+        <item name="android:button">@drawable/btn_selector</item>
+
+    </style>
+    <style name="AirCondition" >
+        <item name="android:actionBarStyle">@layout/air_aty_title</item>
+    </style>
+    <!--
+        Base application theme, dependent on API level. This theme is replaced
+        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
+    -->
+    <style name="AppBaseTheme" parent="android:Theme.Light">
+        <!--
+            Theme customizations available in newer API levels can go in
+            res/values-vXX/styles.xml, while customizations related to
+            backward-compatibility can go here.
+        -->
+    </style>
+    <style name="CustomizedWindowTitleBackground">
+        <item name="android:background">@drawable/bg_aircondition_bar</item>
+    </style>
+    <style name="titlebarstyle" parent="android:Theme">
+        <item name="android:windowTitleSize">48dp</item>
+        <item name="android:windowTitleBackgroundStyle">@style/CustomizedWindowTitleBackground</item>
+        <!-- All customizations that are NOT specific to a particular API-level can go here. -->
+    </style>
+    <!-- Application theme. -->
+   <!-- <style name="AppTheme" parent="AppBaseTheme">
+        &lt;!&ndash; All customizations that are NOT specific to a particular API-level can go here. &ndash;&gt;
+    </style>-->
+    
+</resources>

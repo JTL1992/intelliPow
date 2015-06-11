@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/menu_frame"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffffff" >
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="@drawable/bg_person">
+
+        <ImageView
+            android:layout_width="110dp"
+            android:layout_height="100dp"
+            android:id="@+id/head"
+            android:layout_gravity="top"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/icon_person_man"
+            android:layout_marginTop="15dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="张三"
+            android:id="@+id/key"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/head"
+            android:textColor="#ffffff"
+            android:layout_marginTop="10dp"
+            android:textSize="30dp" />
+
+        <ImageView
+            android:layout_width="12dp"
+            android:layout_height="20dp"
+            android:id="@+id/icon_phone"
+            android:layout_toLeftOf="@+id/num"
+            android:background="@drawable/icon_phone"
+            android:layout_marginRight="5dp"
+            android:layout_alignBottom="@+id/num" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="13550392748"
+            android:id="@+id/num"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="false"
+            android:textSize="15sp"
+            android:textColor="#ffffff"
+            android:layout_below="@+id/key"
+            android:layout_marginTop="10dp" />
+
+        <FrameLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:id="@+id/listview"
+            android:layout_alignParentBottom="true"
+            android:layout_below="@+id/num"
+            android:layout_marginTop="20dp">
+
+        </FrameLayout>
+
+    </RelativeLayout>
+
+</FrameLayout>

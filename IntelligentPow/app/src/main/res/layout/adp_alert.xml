@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="85dp"
+    android:background="#dedede">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="7:00"
+        android:id="@+id/tx_time"
+        android:textSize="30sp"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="40dp"
+        android:textColor="@android:color/black" />
+    <View
+        android:layout_width="1dp"
+        android:layout_height="60dp
+        "
+        android:background="@android:color/black"
+        android:layout_toRightOf="@+id/tx_time"
+        android:id="@+id/line"
+        android:layout_marginLeft="40dp"
+        android:layout_centerVertical="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="风速一"
+        android:id="@+id/tx_wind"
+        android:layout_below="@+id/tx_mode"
+        android:layout_alignLeft="@+id/tx_mode"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="10dp"
+        android:textSize="14sp"
+        android:textColor="@android:color/black" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="送风"
+        android:id="@+id/tx_mode"
+        android:layout_below="@+id/tx_temp"
+        android:layout_alignLeft="@+id/tx_temp"
+        android:layout_marginTop="5dp"
+        android:textColor="@android:color/black"
+        android:textSize="14sp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="20 ℃"
+        android:id="@+id/tx_temp"
+        android:layout_toRightOf="@+id/line"
+        android:layout_marginLeft="20dp"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="10dp"
+        android:textSize="14sp"
+        android:textColor="@android:color/black" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="空调关"
+        android:id="@+id/tx_turn_off"
+        android:textColor="@android:color/black"
+        android:textSize="23sp"
+        android:layout_toRightOf="@+id/line"
+        android:layout_marginLeft="20dp"
+        android:layout_centerVertical="true"
+        android:visibility="invisible" />
+
+    <TextView
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="周一，周二，周三，周四，周五，周六，周日"
+        android:id="@+id/tx_week"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="20dp"
+        android:textSize="12sp"
+        android:textColor="@android:color/black"
+        android:layout_centerVertical="true" />
+</RelativeLayout>

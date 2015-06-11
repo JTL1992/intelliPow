@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,user-scalable=no,minimum-scale=1.0,maximum-scale=1.0"/>
+    <title></title>
+</head>
+<body>
+    <div class="content_kt_list">
+        <div class="loading" style="width: 100%;text-align: center;margin-top: 10%;">
+            <p style="padding-left: 30px;"><img src="oo.jpg"/></p>
+            <p>数据加载中</p>
+        </div>
+    </div>
+</body>
+<script src="jquery-2.1.1.js"></script>
+<script src="highstock.js"></script>
+<script type="application/javascript" src="chartstyle.js"></script>
+<!--<script type="application/javascript" src="harmazing.plugin.WindowPlugin.js"></script>-->
+<script>
+var paras = document.body.baseURI.split("?");
+$(function () {
+    $(".content_kt_list").css("width",(document.documentElement.clientWidth-16)+"px").css("height",(document.documentElement.clientHeight-16)+"px");
+    var paras = document.body.baseURI.split("?");
+    if(paras&&paras[1]){
+		
+        $.ajax({
+            url:"http://"+paras[2]+"/spms/app/acEleRecord?type=1&rbtn=1&"+paras[1],
+            success: function (result) {
+                if(typeof result === "string"){
+                    var r = JSON.parse(result);
+                }else{
+                    var r = result;
+                }
+                draw(r);
+				setTimeout("getdataForLineChart()",1000);
+				
+            }
+        });
+    }
+});
+
+
+function getdataForLineChart(){
+		$.ajax({
+            url:"http://"+paras[2]+"/spms/app/acEleRecord?type=1&rbtn=1&"+paras[1],
+            success: function (result) {
+                if(typeof result === "string"){
+                    var r = JSON.parse(result);
+                }else{
+                    var r = result;
+                }
+				redraw(r);
+				setTimeout("getdataForLineChart()",5000);
+            }
+        });
+}
+
+function draw(data) {
+        Highcharts.setOptions({ global: { useUTC: false } });
+        $(".content_kt_list").highcharts('StockChart', {
+            chart: {
+//        backgroundColor: "rgba(0,0,0,0)"
+            },
+            title: {
+
+                align: "left"
+            },
+            tooltip: {
+		    	pointFormat: '<span>功率</span>: <b>{point.y}</b> 瓦<br/>'
+        },
+            rangeSelector: {
+                inputEnabled: false,
+                buttons: [/*{
+                    type: 'minute',
+                    count: 60,
+                    text: '1小时'
+                }, {
+                    type: 'minute',
+                    count: 720,
+                    text: '12小时'
+                }, {
+                    type: 'day',
+                    count: 1,
+                    text: '1天'
+                }, {
+                    type: 'day',
+                    count: 5,
+                    text: '5天'
+                }, {
+                    type: 'day',
+                    count: 10,
+                    text: '10天'
+                }, {
+                    type: 'day',
+                    count: 15,
+                    text: '15天'
+                },{
+                    type: 'month',
+                    count: 1,
+                    text: '一个月'
+                }, {
+                    type: 'all',
+                    text: '全部'
+                }*/]
+            },
+            yAxis: {
+                opposite: false,
+                min: 0
+            },
+            series: [
+                {
+                    type: "spline",
+                    data: data
+                }
+            ]
+        });
+
+
+		setTimeout("urlAa()",5000);
+
+
+
+
+		
+    }
+
+function urlAa(){window.location.href = "http://127.0.0.1/param?loaded=true";}
+
+
+	function redraw(baseData){
+        //console.log("@@@@@@@@@@@@!!!111");
+        var h = $('.content_kt_list').highcharts();
+		h.series[0].setData(baseData);
+	}
+	 
+</script>
+</html>

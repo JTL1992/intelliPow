@@ -1,0 +1,350 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="45dp"
+        android:id="@+id/title_alert_setting"
+        android:background="@drawable/bg_aboutus_title"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="舒睡曲线设置"
+            android:id="@+id/tx_forget_title"
+            android:layout_centerInParent="true"
+            android:textSize="20sp"
+            android:textColor="@android:color/white" />
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="25dp"
+            android:id="@+id/btn_back"
+            android:background="@drawable/icon_back_left"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="20dp" />
+
+        <Button
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:id="@+id/btn_confirm"
+            android:background="@drawable/icon_save"
+            android:textSize="13sp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="20dp" />
+
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/temp_relativity"
+        android:layout_marginTop="10dp"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="false"
+        android:layout_below="@+id/title_alert_setting">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="温度设置"
+            android:id="@+id/temp_setting"
+            android:textSize="18sp"
+            android:layout_alignParentStart="false"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="5dp"
+            android:textIsSelectable="false"
+            android:textColor="#444444" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="室内 "
+            android:id="@+id/temp_indoor"
+            android:textSize="13sp"
+            android:layout_toRightOf="@+id/temp_setting"
+            android:layout_alignBottom="@+id/temp_setting"
+            android:layout_marginLeft="20dp"
+            android:textColor="#a8a8a8"
+            android:visibility="invisible" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="—"
+            android:id="@+id/inside_temp"
+            android:layout_toRightOf="@+id/temp_indoor"
+            android:layout_alignBottom="@+id/temp_indoor"
+            android:textColor="#9ba4b3"
+            android:textSize="16sp"
+            android:visibility="invisible" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="℃"
+            android:id="@+id/unit"
+            android:textSize="13sp"
+            android:textColor="#9ba4b3"
+            android:layout_alignBottom="@+id/temp_setting"
+            android:layout_toRightOf="@+id/temp_indoor"
+            android:layout_marginLeft="20dp"
+            android:visibility="invisible" />
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="90dp"
+            android:id="@+id/temp_layoutwheel"
+            android:layout_below="@+id/temp_setting"
+            android:layout_marginTop="2dp">
+
+            <com.harmazing.intelligentpow.view.CoverFlow
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:id="@+id/temp_wheel_num" />
+            <View
+                android:layout_width="1dp"
+                android:layout_height="1dp"
+                android:background="#dedede"
+                android:layout_centerHorizontal="true"
+                android:id="@+id/center_white" />
+            <View
+                android:layout_width="2dp"
+                android:layout_height="30dp"
+                android:background="#f18a5d"
+                android:id="@+id/left_diveder"
+                android:layout_toLeftOf="@+id/center_white"
+                android:layout_marginRight="48dp"
+                android:layout_marginTop="20dp" />
+            <View
+                android:layout_width="2dp"
+                android:layout_height="30dp"
+                android:background="#f18a5d"
+                android:layout_centerHorizontal="true"
+                android:id="@+id/right_divider"
+                android:layout_marginLeft="48dp"
+                android:layout_toRightOf="@+id/center_white"
+                android:layout_marginTop="20dp" />
+
+        </RelativeLayout>
+
+        <ImageButton
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:id="@+id/btn_close"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/icon_close_aircondition"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="20dp"
+            android:visibility="gone" />
+
+    </RelativeLayout>
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:background="@drawable/bg_aircondition_line"
+        android:layout_below="@+id/temp_relativity"
+        android:id="@+id/temp_custum" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="模式设置"
+        android:id="@+id/setting_mode"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="20dp"
+        android:textColor="#444444"
+        android:textSize="18sp"
+        android:layout_below="@+id/temp_custum"
+        android:layout_centerHorizontal="true" />
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="90dp"
+        android:id="@+id/mode_layoutwheel"
+
+        android:layout_marginTop="2dp"
+        android:layout_below="@+id/setting_mode">
+
+        <com.harmazing.intelligentpow.view.CoverFlow
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:id="@+id/mode_wheel" />
+        <View
+            android:layout_width="1dp"
+            android:layout_height="1dp"
+            android:background="#dedede"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/center_white1" />
+        <View
+            android:layout_width="2dp"
+            android:layout_height="30dp"
+            android:background="#f18a5d"
+            android:id="@+id/left_diveder1"
+            android:layout_toLeftOf="@+id/center_white1"
+            android:layout_marginRight="48dp"
+            android:layout_marginTop="20dp" />
+        <View
+            android:layout_width="2dp"
+            android:layout_height="30dp"
+            android:background="#f18a5d"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/right_divider1"
+            android:layout_marginLeft="48dp"
+            android:layout_toRightOf="@+id/center_white1"
+            android:layout_marginTop="20dp" />
+
+    </RelativeLayout>
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:background="@drawable/bg_aircondition_line"
+        android:layout_below="@+id/mode_layoutwheel"
+        android:id="@+id/custom" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="风速设置"
+        android:id="@+id/setting_wind"
+        android:textColor="#444444"
+        android:textSize="18sp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="20dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/custom" />
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="90dp"
+        android:id="@+id/wind_layoutwheel"
+        android:layout_below="@+id/setting_wind"
+        android:layout_marginTop="2dp">
+
+        <com.harmazing.intelligentpow.view.CoverFlow
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:id="@+id/wind_wheel" />
+        <View
+            android:layout_width="1dp"
+            android:layout_height="1dp"
+            android:background="#dedede"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/center_white2" />
+        <View
+            android:layout_width="2dp"
+            android:layout_height="30dp"
+            android:background="#f18a5d"
+            android:id="@+id/left_diveder2"
+            android:layout_toLeftOf="@+id/center_white2"
+            android:layout_marginRight="48dp"
+            android:layout_marginTop="20dp" />
+        <View
+            android:layout_width="2dp"
+            android:layout_height="30dp"
+            android:background="#f18a5d"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/right_divider2"
+            android:layout_marginLeft="48dp"
+            android:layout_toRightOf="@+id/center_white2"
+            android:layout_marginTop="20dp" />
+
+    </RelativeLayout>
+    <com.harmazing.intelligentpow.view.SlipButton
+        android:layout_width="150dp"
+        android:layout_height="48dp"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/toggle_button"
+        android:layout_alignParentBottom="false"
+        android:layout_below="@+id/wind_layoutwheel" />
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="40dp"
+        android:id="@+id/time_setting"
+        android:background="#dedede"
+        android:layout_above="@+id/delet"
+        android:layout_alignParentBottom="false">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="时间设置"
+            android:id="@+id/textView"
+            android:textSize="18sp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="20dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="未设置"
+            android:id="@+id/time_spc"
+            android:textSize="18sp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginRight="20dp"
+            android:layout_alignParentRight="true" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="40dp"
+        android:id="@+id/week_setting"
+        android:background="#dedede"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="5dp"
+        android:layout_alignWithParentIfMissing="false"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="重复设置"
+            android:id="@+id/textView2"
+            android:textSize="18sp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="20dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="未设置"
+            android:id="@+id/week_spc"
+            android:textSize="18sp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginRight="20dp"
+            android:layout_alignParentRight="true" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="40dp"
+        android:id="@+id/delet"
+        android:layout_alignParentBottom="true"
+        android:gravity="center_vertical"
+        android:background="#dedede"
+        android:layout_marginTop="5dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="删除该点"
+            android:id="@+id/tx_delet"
+            android:textSize="18sp"
+            android:layout_marginLeft="20dp" />
+    </RelativeLayout>
+</RelativeLayout>

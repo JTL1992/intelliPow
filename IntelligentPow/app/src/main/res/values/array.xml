@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="onOff">
+        <item>空调开</item>
+        <item>空调关</item>
+    </string-array>
+    <string-array name="mode">
+        <item>制冷</item>
+        <item>制热</item>
+        <item>送风</item>
+        <item>除湿</item>
+        <item>自动</item>
+    </string-array>
+    <string-array name="wind">
+        <item>风速一</item>
+        <item>风速二</item>
+        <item>风速三</item>
+        <item>风速四</item>
+        <item>风速五</item>
+        <item>自动</item>
+        <item>静音</item>
+    </string-array>
+    <string-array name="day">
+        <item>星期一</item>
+        <item>星期二</item>
+        <item>星期三</item>
+        <item>星期四</item>
+        <item>星期五</item>
+        <item>星期六</item>
+        <item>星期日</item>
+    </string-array>
+</resources>

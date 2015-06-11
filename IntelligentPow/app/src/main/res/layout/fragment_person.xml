@@ -1,0 +1,264 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".UI.PersonFragment"
+    android:background="#999999">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/Relative">
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="150dp"
+            android:background="@drawable/bg_person_title"
+            android:id="@+id/user_title">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="张三"
+                android:id="@+id/name_u"
+                android:textColor="#ffffff"
+                android:textSize="20sp"
+                android:layout_toRightOf="@+id/img_u"
+                android:layout_alignTop="@+id/img_u"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="10dp" />
+
+            <ImageView
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:id="@+id/img_u"
+                android:background="@drawable/icon_person_man"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginLeft="20dp"
+                android:layout_marginBottom="20dp" />
+
+            <ImageView
+                android:layout_width="12dp"
+                android:layout_height="20dp"
+                android:id="@+id/image_phone"
+                android:background="@drawable/icon_phone"
+                android:layout_below="@+id/name_u"
+                android:layout_alignLeft="@+id/name_u"
+                android:layout_marginTop="10dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="13418147563"
+                android:id="@+id/num_u"
+                android:textColor="#ffffff"
+                android:phoneNumber="true"
+                android:layout_toRightOf="@+id/image_phone"
+                android:layout_alignBottom="@+id/image_phone"
+                android:textSize="20sp"
+                android:layout_marginLeft="5dp" />
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/user_title"
+            android:background="#dedede"
+            android:id="@+id/type"
+            android:padding="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="用户类型"
+                android:id="@+id/usertype"
+                android:layout_below="@+id/user_title"
+                android:background="#dedede"
+                android:textColor="#666666"
+                android:layout_marginLeft="20dp"
+                android:textSize="20sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="试用"
+                android:id="@+id/edit1"
+                android:textColor="#333333"
+                android:layout_marginLeft="20dp"
+                android:textSize="20sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/type"
+            android:layout_marginTop="1dp"
+            android:background="#dedede"
+            android:padding="10dp"
+            android:id="@+id/yewuquyu">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="业务区域"
+                android:id="@+id/yewu"
+                android:layout_marginLeft="20dp"
+                android:textColor="#666666"
+                android:textSize="20sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="南开区"
+                android:id="@+id/edit2"
+                android:layout_marginLeft="20dp"
+                android:textColor="#333333"
+                android:textSize="20sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/yewuquyu"
+            android:background="#dedede"
+            android:id="@+id/yongdianquyu"
+            android:measureWithLargestChild="false"
+            android:padding="10dp"
+            android:layout_marginTop="1dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="用电区域"
+                android:id="@+id/quyu"
+                android:layout_marginLeft="20dp"
+                android:textColor="#666666"
+                android:textSize="20sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="华北区域"
+                android:id="@+id/edit3"
+                android:layout_marginLeft="20dp"
+                android:textColor="#333333"
+                android:textSize="20sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            android:layout_below="@+id/yongdianquyu"
+            android:background="#dedede"
+            android:id="@+id/address"
+            android:padding="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="住    址"
+                android:id="@+id/dizhi"
+                android:layout_marginLeft="20dp"
+                android:textColor="#666666"
+                android:textSize="20sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="南开区环岛路23号 "
+                android:id="@+id/edit4"
+                android:textColor="#333333"
+                android:textSize="20sp"
+                android:layout_marginLeft="40dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            android:layout_below="@+id/address"
+            android:background="#dedede"
+            android:id="@+id/e_mail"
+            android:padding="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="邮    箱"
+                android:id="@+id/youxiang"
+                android:layout_marginLeft="20dp"
+                android:textColor="#666666"
+                android:textSize="20sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="18801858985@163.com"
+                android:id="@+id/edit5"
+                android:textSize="20sp"
+                android:textColor="#333333"
+                android:layout_marginLeft="40dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            android:layout_below="@+id/e_mail"
+            android:background="#dedede"
+            android:focusableInTouchMode="false"
+            android:id="@+id/dianbiaohao"
+            android:padding="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="电  表  号"
+                android:id="@+id/diaobiao"
+                android:layout_marginLeft="20dp"
+                android:textColor="#666666"
+                android:textSize="20sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="801158985"
+                android:id="@+id/edit6"
+                android:textSize="20sp"
+                android:textColor="#333333"
+                android:layout_marginLeft="23dp" />
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_marginTop="1dp"
+            android:layout_below="@+id/dianbiaohao"
+            android:background="#dedede"></RelativeLayout>
+    </RelativeLayout>
+
+</FrameLayout>

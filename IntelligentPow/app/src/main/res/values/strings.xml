@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">智能用电手机客户端</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="person_data">个人信息</string>
+    <string name="MainAty">智能用电</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_air_condition_aty">AirConditionAty</string>
+    <string name="title">空调一</string>
+    <string name="title_activity_login_aty">LoginAty</string>
+    <string name="title_activity_door_aty">DoorAty</string>
+    <string name="title_activity_forget_secret_aty">ForgetSecretAty</string>
+    <string name="title_activity_about_us_aty">AboutUsAty</string>
+    <string name="title_activity_alert_aty">AlertAty</string>
+    <string name="title_activity_alert_setting_aty">AlertSettingAty</string>
+    <string name="menu_settings">Settings</string>
+    <string name="scan_text">将二维码放入框内, 即可自动扫描</string>
+    <string name="title_activity_alert_sleep_aty">AlertSleepAty</string>
+    <string name="title_activity_sleep_setting_aty">SleepSettingAty</string>
+
+</resources>

@@ -1,0 +1,11 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".MainAty" >
+    <item android:id="@+id/abs__action_bar_container"
+
+          android:actionLayout="@layout/actionbar"
+
+          android:showAsAction="ifRoom"
+          android:title="@string/action_settings"
+          android:visible="true"/>
+</menu>

@@ -1,0 +1,152 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".UI.MainAtyFragement">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:clickable="false"
+        android:layout_gravity="top"
+        android:gravity="top"
+        android:id="@+id/relativeLayout2"
+        android:background="#dfdfdf">
+
+        <FrameLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_below="@+id/temp_relativity"
+            android:id="@+id/listdevice"
+            android:background="#dedede" />
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="150dp"
+            android:background="@drawable/bg_main_title"
+            android:id="@+id/temp_relativity"
+            android:clickable="false" >
+
+            <RelativeLayout
+                android:orientation="vertical"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true">
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:id="@+id/main_temp"
+                    android:layout_alignParentLeft="false"
+                    android:layout_marginRight="20dp"
+                    android:layout_alignParentRight="true">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:text="20°c"
+                        android:id="@+id/temp"
+                        android:textSize="70sp"
+                        android:textColor="#ffffff"
+                        android:layout_marginTop="10dp" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="朝阳"
+                    android:id="@+id/district"
+                    android:textSize="12sp"
+                    android:textIsSelectable="false"
+                    android:textColor="#ffffff"
+                    android:visibility="gone" />
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:id="@+id/main_wether"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="5dp"
+                    android:layout_below="@+id/main_city"
+                    android:layout_alignLeft="@+id/main_city">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:text="晴"
+                        android:id="@+id/whether"
+                        android:textSize="20sp"
+                        android:textIsSelectable="false"
+                        android:textColor="#ffffff" />
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:id="@+id/icon_wehther"
+                        android:background="#00ffffff"
+                        android:layout_marginBottom="10dp"
+                        android:src="@drawable/icon_wether_sun"
+                        android:layout_gravity="bottom"
+                        android:layout_marginTop="5dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_alignParentTop="false"
+                    android:id="@+id/main_city"
+                    android:layout_alignParentRight="false"
+                    android:layout_centerInParent="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginLeft="30dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="30dp"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:text="北京"
+                        android:id="@+id/city"
+                        android:textSize="20sp"
+                        android:textIsSelectable="false"
+                        android:textColor="#ffffff"
+                        android:layout_gravity="center_horizontal" />
+
+                    <ImageView
+                        android:layout_width="8dp"
+                        android:layout_height="11dp"
+                        android:id="@+id/icon_city"
+                        android:background="@drawable/icon_location"
+                        android:adjustViewBounds="true"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginTop="10dp" />
+                </LinearLayout>
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+        <FrameLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_below="@+id/listdevice"
+            android:background="#dedede"
+            android:id="@+id/listsensor"
+            android:layout_marginTop="1dp"
+            android:visibility="gone" />
+    </RelativeLayout>
+
+</FrameLayout>
