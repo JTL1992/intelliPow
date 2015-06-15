@@ -3,7 +3,8 @@ package com.harmazing.intelligentpow.model;
 import java.io.Serializable;
 
 /**
- * Created by Administrator on 2015/3/30.
+ * Created by jtl on 2015/3/30.
+ * 定时项
  */
 public class AlertItem implements Serializable {
  //闹钟： 时间，开关，温度，模式，风速，试用时间
@@ -24,8 +25,8 @@ public class AlertItem implements Serializable {
     private Integer saturday;//星期六
     private Integer sunday;//星期日
     private Integer alone;//表示当前定时设置是否为独立的……
-    private Integer num;
-    private String week;
+    private Integer num; //当前页面页码
+    private String week;//星期
 
     public String getWeek() {
         return week;

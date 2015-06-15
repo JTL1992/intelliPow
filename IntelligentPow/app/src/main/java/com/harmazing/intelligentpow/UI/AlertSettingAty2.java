@@ -39,7 +39,7 @@ import java.util.Calendar;
 
 /**
  * Created by jtl on 2015/4/14.
- * 设置状态界面
+ * 定时设置状态界面
  */
 public class AlertSettingAty2 extends Activity {
     ImageView btnBack;

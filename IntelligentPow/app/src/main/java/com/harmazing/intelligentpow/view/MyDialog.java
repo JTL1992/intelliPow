@@ -15,7 +15,8 @@ import com.harmazing.intelligentpow.UI.LoginAty;
 import com.harmazing.intelligentpow.tools.HttpHead;
 
 /**
- * Created by Administrator on 2015/3/30.
+ * Created by JTL on 2015/3/30.
+ * 废弃了（不使用）
  */
 public class MyDialog extends Dialog{
     private Context context;
@@ -72,18 +73,8 @@ public class MyDialog extends Dialog{
                 }
             });
         }
-//        if (title.equals("确定删除此项定时设置么？")){
-//            confirm.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View view) {
-//                    confirm();
-//                    myDialog.dismiss();
-//                }
-//            });
-//        }
 
     }
-
     public interface OnPickerListener{
         public void onChoose(MyDialog myDialog, int i);
     }

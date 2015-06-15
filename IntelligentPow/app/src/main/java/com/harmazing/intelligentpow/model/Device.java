@@ -7,23 +7,23 @@ import android.widget.ImageView;
  * 设备信息
  */
 public class Device {
-    private String id;
-    private String gwId;
-    private String temp;
-    private String state;
-    private String name;
-    private int hum;
-    private int humOrder;
-    private int icon;
-    private int wind;
-    private int windOrder;
-    private int deviceType;
-    private int battery;
-    private int tempOrder;
-    private int minTemp;
-    private int maxTemp;
-    private int hotCold;
-    private String errorDetail;
+    private String id; //设备id
+    private String gwId; // 网关id
+    private String temp; // 温度
+    private String state; // 状态
+    private String name; // 名字
+    private int hum; //  模式
+    private int humOrder; //  模式顺序
+    private int icon; // 图标
+    private int wind; // 风速
+    private int windOrder; // 风速顺序
+    private int deviceType; // 设备类型
+    private int battery; // 电池电量
+    private int tempOrder; // 温度顺序
+    private int minTemp; // 最小温度
+    private int maxTemp; // 最大温度
+    private int hotCold; // 冷热模式
+    private String errorDetail; // 错误信息
 
     public Device(String temp, String state, String name, int hum, int icon, int wind,int deviceType){
         this.hum = hum;

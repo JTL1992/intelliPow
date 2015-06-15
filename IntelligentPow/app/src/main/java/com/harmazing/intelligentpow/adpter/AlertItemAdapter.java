@@ -47,11 +47,11 @@ import org.json.JSONObject;
  */
 public class AlertItemAdapter extends ArrayAdapter<AlertItem> {
 
-    private int allowHot,maxTemp,minTemp;
+    private int allowHot,maxTemp,minTemp;//传入的限制系数
     private String deviceId;
     private String url = HttpHead.head + "UpdateShowTimingSet";
     private ProgressDialog progressDialog;
-    private RefreshViewListener rfListener;
+    private RefreshViewListener rfListener;//刷新回调接口
     public AlertItemAdapter(Context context){
         super(context,0);
     }
@@ -125,6 +125,7 @@ public class AlertItemAdapter extends ArrayAdapter<AlertItem> {
                 getContext().startActivity(intent);
             }
         });
+        //长按删除定时
         viewHolder.layoutAlertItem.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
@@ -160,12 +161,20 @@ public class AlertItemAdapter extends ArrayAdapter<AlertItem> {
         });
         return convertView;
     }
+    /*
+     添加刷新回调方法
+     */
     public void setRefreshListener(RefreshViewListener l){rfListener = l;}
     public void refresh(){
         if (rfListener != null){
             rfListener.onRefreshView();
         }
     }
+
+    /**
+     * 删除项
+     * @param item alert类
+     */
     private void deleteItem(AlertItem item) {
         LogUtil.v("deleturl",HttpHead.head+API.DEL_TIMESETTING+item.getId());
         RequestParams params = new RequestParams();
@@ -205,6 +214,10 @@ public class AlertItemAdapter extends ArrayAdapter<AlertItem> {
         });
     }
 
+    /**
+     * 发送开关闹钟的消息
+     * @param alertItem alertitem
+     */
     private void httpPostSwitch(AlertItem alertItem) {
         AlertItemUpdate alertItemUpdate = new AlertItemUpdate();
         alertItemUpdate.setDeviceId(deviceId);
@@ -242,6 +255,12 @@ public class AlertItemAdapter extends ArrayAdapter<AlertItem> {
       TextView txTime,txWind,txTemp,txMode,txShut,txWeek;
       CheckBox checkBox;
     }
+
+    /**
+     * 模式处理得到文字
+     * @param hum hum
+     * @return 处理后的文字
+     */
     public static String getMode(Integer hum){
         String humString ="";
         if (hum != null)
@@ -255,6 +274,12 @@ public class AlertItemAdapter extends ArrayAdapter<AlertItem> {
         }
         return  humString;
     }
+
+    /**
+     * 处理风速得到文字
+     * @param wind wind
+     * @return 文字
+     */
     public static String getWind(Integer wind){
         String windString;
         switch (wind){
@@ -269,6 +294,13 @@ public class AlertItemAdapter extends ArrayAdapter<AlertItem> {
         }
         return windString;
     }
+
+    /**
+     * 处理星期设置转化成文字
+     * @param alertItem alertitem
+     * @param flags 标志
+     * @return  文字
+     */
     public static String getTimeSetting(AlertItem alertItem, boolean[] flags){
           return  getTimeSetting(flags,alertItem.getMonday(),alertItem.getTuesday(),
                   alertItem.getWednesday(),alertItem.getThursday(),alertItem.getFriday(),

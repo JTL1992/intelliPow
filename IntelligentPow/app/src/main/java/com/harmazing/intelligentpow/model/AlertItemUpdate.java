@@ -4,13 +4,13 @@ import java.security.PrivateKey;
 
 /**
  * Created by jtl on 2015/4/19.
- * 更新alert
+ * 更新alert的  mode
  */
 public class AlertItemUpdate {
-    private String deviceId;
-    private String userId;
-    private String rairconSetting;
-    private AlertItem clockSetting = new AlertItem();
+    private String deviceId; // 设备ID
+    private String userId; // 用户ID
+    private String rairconSetting; //
+    private AlertItem clockSetting = new AlertItem(); //
     public AlertItem getClockSetting() {
         return clockSetting;
     }

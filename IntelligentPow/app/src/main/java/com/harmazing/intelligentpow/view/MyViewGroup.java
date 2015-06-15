@@ -5,7 +5,9 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
 /**
- * Created by Administrator on 2015/4/17.
+ *Created by JTL on 2015/4/17.
+ *这个控件可以屏蔽点击事件
+ * 在空调界面下拉菜单时使用遮罩效果
  */
 public class MyViewGroup extends RelativeLayout {
     private OnDispatchTouchEvent e;
@@ -33,7 +35,6 @@ public class MyViewGroup extends RelativeLayout {
     protected void onLayout(boolean b, int i, int i2, int i3, int i4) {
                 super.onLayout(b,i,i2,i3,i4);
     }
-
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
           if (dispatch(ev)){

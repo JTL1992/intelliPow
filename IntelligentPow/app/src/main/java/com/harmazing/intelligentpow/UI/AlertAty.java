@@ -28,6 +28,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+/**
+ * Created by JTL on 2015/4/17.
+ * 定时页面
+ */
+
 public class AlertAty extends Activity {
     ImageView btnBack,btnSetting;
     AlertItemAdapter alertItemAdapter;

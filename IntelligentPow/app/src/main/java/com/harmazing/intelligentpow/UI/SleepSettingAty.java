@@ -40,7 +40,10 @@ import org.apache.http.Header;
 import org.json.JSONObject;
 
 import java.util.Calendar;
-
+/**
+ * Created by JTL on 2015/4/17.
+ * 舒睡曲线设置界面
+ */
 public class SleepSettingAty extends Activity {
     ImageView btnBack;
     private TextView tempSetting, modeSetting, windSetting; //温度，风速，模式提示

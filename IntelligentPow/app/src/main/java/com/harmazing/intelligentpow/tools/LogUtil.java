@@ -5,7 +5,8 @@ import android.util.Log;
 import com.harmazing.intelligentpow.BuildConfig;
 
 /**
- * Created by Administrator on 2015/4/20.
+ * Created by jtl on 2015/4/20.
+ * 日志工具
  */
 public class LogUtil {
     public static boolean isDebug = BuildConfig.DEBUG;

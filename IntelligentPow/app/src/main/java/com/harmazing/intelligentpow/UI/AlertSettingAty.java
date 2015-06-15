@@ -15,6 +15,10 @@ import com.harmazing.intelligentpow.R;
 import com.harmazing.intelligentpow.view.MyDialog;
 
 import java.util.Calendar;
+/**
+ * Created by JTL on 2015/4/17.
+ * 定时页面（废弃使用了）
+ */
 
 public class AlertSettingAty extends Activity {
     RelativeLayout rlTime,rlState,rlTemp,rlWind,rlMode,rlDay;

@@ -1,13 +1,14 @@
 package com.harmazing.intelligentpow.model;
 
 /**
- * Created by Administrator on 2015/4/21.
+ * Created by jtl on 2015/4/21.
+ * 设置重复周期用到的数据传输类
  */
 public class RepeatSetting {
-    private String type;
-    private Week weeks;
-    private String deviceId;
-    private String userId;
+    private String type; //类型
+    private Week weeks; //星期
+    private String deviceId; //设备ID
+    private String userId; //用户ID
 
     public String getDeviceId() {
         return deviceId;

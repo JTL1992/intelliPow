@@ -31,7 +31,7 @@ import org.json.JSONObject;
 
 /**
  * A simple {@link android.app.Fragment} subclass.
- *
+ * 设置添加设备，打开网络
  */
 public class SettingFragment extends android.support.v4.app.Fragment  {
     RelativeLayout layoutAddDevice,layoutAboutUs,layoutOpenNetwork;
@@ -60,6 +60,7 @@ public class SettingFragment extends android.support.v4.app.Fragment  {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
            initView();
+        //关于我们
         layoutAboutUs.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -67,6 +68,7 @@ public class SettingFragment extends android.support.v4.app.Fragment  {
                 getActivity().startActivity(intent);
             }
         });
+        //添加设备
         layoutAddDevice.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -77,6 +79,7 @@ public class SettingFragment extends android.support.v4.app.Fragment  {
                 startActivityForResult(intent, SCANNIN_GREQUEST_CODE);
             }
         });
+        //打开网络
         layoutOpenNetwork.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

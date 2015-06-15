@@ -20,23 +20,23 @@ import org.json.JSONObject;
  * 存储app记录
  */
 public class AppConfig {
-    public static final String	 KEY_PASSWORD = "password";
-    public static final String	 KEY_USER = "user";
-    private static final String TAG = "AppConfig";
-    private static final String USER_ID = "userId";
-    private static final String USER_NAME = "userName";
-    private static final String MOBIL = "mobile";
-    private static final String ADDRESS = "address";
-    private static final String EMAIL = "email";
-    private static final String ELEAREA = "eleArea";
-    private static final String BIZAREA = "bizArea";
-    private static final String TYPE = "type";
-    private static final String AMMETER ="ammeter";
-    public static final String PREFERENCES_FILE_NAME = "Preferences";
+    public static final String	 KEY_PASSWORD = "password"; //密码
+    public static final String	 KEY_USER = "user"; // 用户账号
+    private static final String TAG = "AppConfig"; //
+    private static final String USER_ID = "userId"; //用户ID
+    private static final String USER_NAME = "userName"; //用户名
+    private static final String MOBIL = "mobile";//手机
+    private static final String ADDRESS = "address";//地址
+    private static final String EMAIL = "email";//邮箱
+    private static final String ELEAREA = "eleArea";//用电区域
+    private static final String BIZAREA = "bizArea";//业务区域
+    private static final String TYPE = "type";//用户类型
+    private static final String AMMETER ="ammeter";//电表号
+    public static final String PREFERENCES_FILE_NAME = "Preferences";//
     //账户状态
-    private final int NORMAL = 0;
-    private final int COLD_ACOUNT = 2;
-    private final int DEL_ACOUNT = 1;
+    private final int NORMAL = 0;//
+    private final int COLD_ACOUNT = 2;//
+    private final int DEL_ACOUNT = 1;//
     private static final boolean D = false;
     private static AppConfig mySelf = null;
     SharedPreferences preferences = null;

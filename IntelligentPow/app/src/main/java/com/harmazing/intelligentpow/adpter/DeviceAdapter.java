@@ -31,6 +31,7 @@ public class DeviceAdapter extends ArrayAdapter<Device> {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.devicemenu, null);
         }
         TextView text_state = (TextView) convertView.findViewById(R.id.state_siaz);
+        //判断开关状态
         if(getItem(position).getState().equals("关")){
             text_state.setText(getItem(position).getState());
             text_state.setTextColor(Color.rgb(99, 99, 99));
@@ -71,6 +72,7 @@ public class DeviceAdapter extends ArrayAdapter<Device> {
 //        }
 //        else{
 //         text_name.setText(getItem(position).getName());
+        //处理文字长度过长直接省略
         if (getItem(position).getName().length() > 10){
             if (getItem(position).getState().equals("开") ||getItem(position).getState().equals("异常") )
               text_name.setText(getItem(position).getName().substring(0,8)+"...");

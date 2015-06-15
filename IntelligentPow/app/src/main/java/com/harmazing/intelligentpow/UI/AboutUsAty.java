@@ -10,6 +10,11 @@ import android.widget.ImageButton;
 import com.actionbarsherlock.view.Window;
 import com.harmazing.intelligentpow.R;
 
+/**
+ * Created by JTL on 2014/10/3.
+ * 关于我们页面
+ */
+
 public class AboutUsAty extends Activity {
     ImageButton back;
     @Override

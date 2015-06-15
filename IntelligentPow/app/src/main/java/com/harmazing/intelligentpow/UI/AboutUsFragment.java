@@ -44,12 +44,13 @@ import java.net.URLDecoder;
 
 /**
  * A simple {@link android.app.Fragment} subclass.
- *关于我们Fragment
+ *舒睡曲线Fragment
  */
 public class AboutUsFragment extends android.support.v4.app.Fragment{
     static int num = 0;
     static CrossWebView webView;
     ImageView btnAddCurve;
+    //初始化星期的选项标志位
     static boolean[] flags = {false,false,false,false,false,false,false};
 
     public AboutUsFragment() {
@@ -60,23 +61,16 @@ public class AboutUsFragment extends android.support.v4.app.Fragment{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
         // Inflate the layout for this fragment
         if (getActivity().getActionBar() != null){
        //改变背景和Logo
         getActivity().getActionBar().setBackgroundDrawable(getResources().getDrawable(R.drawable.bg_aboutus_title));
         getActivity().getActionBar().setLogo(getResources().getDrawable(R.drawable.icon_back_left));
 //        webView = (CrossWebView) getActivity().findViewById(R.id.web_sleep);
-
-
         getActivity().getActionBar().setTitle("舒睡曲线");
-
 //       getActivity().getActionBar().setDisplayShowTitleEnabled(true);
-
         }
-
         return inflater.inflate(R.layout.framel_sleeping_line, null);
-
     }
 
     @Override
@@ -104,7 +98,7 @@ public class AboutUsFragment extends android.support.v4.app.Fragment{
             }
         });
         webView.setWebViewClient(new webViewClient());
-
+      //添加曲线
         btnAddCurve.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -116,6 +110,7 @@ public class AboutUsFragment extends android.support.v4.app.Fragment{
             }
         });
     }
+    //网络监听
     private class webViewClient extends WebViewClient {
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
             String s = URLDecoder.decode(url);
@@ -127,8 +122,14 @@ public class AboutUsFragment extends android.support.v4.app.Fragment{
         }
     }
 
+    /**
+     * 解析json数据
+     * @param activity activity
+     * @param alertItem alertitem
+     */
     public static void parseJson(final Activity activity, final AlertItem alertItem) {
         Intent intent = new Intent(activity,SleepSettingAty.class);
+        //如果点击是一个点，做修改处理
         if (alertItem.getType().equals("node")){
             intent.putExtra("from",SleepSettingAty.EDIT);
             intent.putExtra("alertItem",alertItem);
@@ -137,12 +138,13 @@ public class AboutUsFragment extends android.support.v4.app.Fragment{
 //            Toast.makeText(activity,alertItem.toString(),Toast.LENGTH_LONG).show();
             activity.startActivity(intent);
         }
+        //如果点击的是重复设置，做重复设置处理
         if (alertItem.getType().equals("rpe")){
             Toast.makeText(activity,alertItem.toString(),Toast.LENGTH_LONG).show();
 
             initRepeat(activity,alertItem);
         }
-
+        //点击添加按钮，做添加处理
         if (alertItem.getType().equals("add")){
             intent.putExtra("from",SleepSettingAty.ADD);
             intent.putExtra("curveId",alertItem.getId());
@@ -150,10 +152,12 @@ public class AboutUsFragment extends android.support.v4.app.Fragment{
             activity.startActivity(intent);
             LogUtil.v("url_num_add",num+"");
         }
+        //滑动切换页面
         if (alertItem.getType().equals("page")){
             num = alertItem.getNum();
             LogUtil.v("url_num",num+"");
         }
+        //点击删除
         if (alertItem.getType().equals("delete")){
             final AlertDialog alertDialog = new AlertDialog.Builder(activity).create();
             alertDialog.setMessage("确定要删除该曲线设置么？");
@@ -172,6 +176,7 @@ public class AboutUsFragment extends android.support.v4.app.Fragment{
             alertDialog.show();
         }
     }
+    //重构该方法，可以重复使用
     public static void parseJson(final Activity activity, final AlertItem alertItem, Bundle bundle) {
         Intent intent = new Intent(activity,SleepSettingAty.class);
         intent.putExtra("allowHot",bundle.getInt("allowHot"));
@@ -220,6 +225,11 @@ public class AboutUsFragment extends android.support.v4.app.Fragment{
 
     }
 
+    /**
+     * 删除处理
+     * @param activity activity
+     * @param alertItem alertitme
+     */
     public static void  deleteItem(final Activity activity, final AlertItem alertItem) {
         final ProgressDialog progressDialog = new ProgressDialog(activity);
         progressDialog.setMessage("正在删除。。。");
@@ -274,7 +284,7 @@ public class AboutUsFragment extends android.support.v4.app.Fragment{
         });
     }
 
-
+   //初始化星期选项
 
     public static void initRepeat(final Activity activity, final AlertItem alertItem) {
         final ProgressDialog progressDialog = new ProgressDialog(activity);
@@ -323,6 +333,7 @@ public class AboutUsFragment extends android.support.v4.app.Fragment{
                             flags[i] = b;
                         }
                     };
+                    //资源文件中取出列表
                     builder.setMultiChoiceItems(R.array.day, flags, clickListener3);
                     builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
                         @Override
@@ -369,7 +380,7 @@ public class AboutUsFragment extends android.support.v4.app.Fragment{
 
         });
     }
-
+    //上传星期设置
     public static void updateRepeat(final Activity activity, AlertItem alertItem) {
         final ProgressDialog progressDialog = new ProgressDialog(activity);
         progressDialog.setMessage("请等待。。。");
@@ -413,7 +424,7 @@ public class AboutUsFragment extends android.support.v4.app.Fragment{
 
         });
     }
-
+    //重新加载该页面
     @Override
     public void onResume() {
         LogUtil.v("onResume","");
@@ -428,7 +439,7 @@ public class AboutUsFragment extends android.support.v4.app.Fragment{
         webView.loadUrl("file:///android_asset/aa/charts.html?userId="
                 +AppConfig.getInstance().getUserId()+"&url="+HttpHead.forhead+"&num="+num+ "&isDevice=0");
     }
-
+    //销毁后页面号清零
     @Override
     public void onDestroy() {
         super.onDestroy();

@@ -34,6 +34,10 @@ import java.net.URLDecoder;
 
 import static com.harmazing.intelligentpow.UI.AboutUsFragment.num;
 import static com.harmazing.intelligentpow.UI.AboutUsFragment.parseJson;
+/**
+ * Created by JTL on 2015/4/17.
+ * 从空调页面进入的舒睡曲线界面
+ */
 
 public class AlertSleepAty extends Activity {
     CrossWebView webView;
